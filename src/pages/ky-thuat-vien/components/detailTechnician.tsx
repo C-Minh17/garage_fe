@@ -1,5 +1,6 @@
 import React from "react";
 import { ColorStyle } from "../../../styles/colors";
+import { C } from "react-router/dist/development/index-react-server-client-BSxMvS7Z";
 
 interface IDetailTechnician {
   data: MTechnician.IRecord | undefined;
@@ -64,6 +65,14 @@ const DetailTechnician = ({ data }: IDetailTechnician) => {
              <span style={{ background: "#e6f7ff", color: "#1890ff", padding: "4px 8px", borderRadius: "4px", fontSize: "13px" }}>
                 {data?.position || "Nhân viên"}
              </span>
+        </div>
+      </div>
+      <div style={rowStyle}>
+        <div style={labelStyle}>Trạng thái:</div>
+        <div style={valueStyle}>
+          <span style={{color: data?.active ? ColorStyle.Success : "#faad14",fontWeight: 600}}>
+            {data?.active ? "Hoạt động" : "Không hoạt động"}
+          </span>
         </div>
       </div>
 

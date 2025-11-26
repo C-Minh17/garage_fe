@@ -4,18 +4,20 @@ import Button from "../../../components/Button"
 import { notify } from "../../../components/Notification"
 import { AiOutlineCheckCircle, AiOutlineSearch, AiOutlineSortAscending, AiOutlineSortDescending } from "react-icons/ai"
 import { Input } from "../../../components/FormBase"
-import { getCar, putCar } from "../../../services/api/carApi"
+import { getCar, putCar, searchCar } from "../../../services/api/carApi"
 import BaseModal from "../../../components/baseModal"
 import { ColorStyle } from "../../../styles/colors"
 import { IoIosCheckmarkCircleOutline } from "react-icons/io"
 
 const RepairCar = () => {
+  const [carList, setCarList] = useState<MCar.IResponse[]>([])
   const [dataRepair, setDataRepair] = useState<MCar.IResponse[]>([])
   const [isReload, setIsReload] = useState<boolean>(false)
   const [search, setSearch] = useState<string>("")
   const [isModalConfirm, setIsModalConfirm] = useState<boolean>(false)
   const [selectedCar, setSelectedCar] = useState<MCar.IResponse | null>(null)
   const [isDesc, setIsDesc] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true)
 
   const columns: Column<MCar.IResponse>[] = [
     {
@@ -39,13 +41,13 @@ const RepairCar = () => {
       width: 300
     },
     {
-      title: "Thao tác",
+      title: <div style={{ textAlign: "center" }}>Thao tác</div>,
       width: 120,
       render: (_, record) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Button
             onClick={() => openConfirmModal(record)}
-            type="success"
+            type="primary"
             style={{ 
                 padding: "5px 10px", 
                 fontSize: 13, 
@@ -60,15 +62,21 @@ const RepairCar = () => {
       )
     },
   ]
-
   useEffect(() => {
-    getCar().then(res => {
-      if (res.data) {
-        const listRepair = res.data.filter(car => car.active === false)
-        setDataRepair(listRepair)
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        let res = search ? await searchCar(search) : await getCar()
+        const list = res?.data ?? []
+
+        setCarList(list)
+        setDataRepair(list.filter(car => car.active === false))
+      } finally {
+        setLoading(false)
       }
-    })
-  }, [isReload])
+    }
+    fetchData()
+  }, [search, isReload])
 
   const openConfirmModal = (car: MCar.IResponse) => {
       setSelectedCar(car)
@@ -94,7 +102,7 @@ const RepairCar = () => {
         notify({ 
             title: "Thành công", 
             type: "success", 
-            description: `Xe ${selectedCar.plate} đã sửa xong và được đưa về danh sách hoạt động.` 
+            description: `Xe ${selectedCar.plate} đã sửa xong và được đưa về danh sách chờ thanh toán.` 
         })
         setIsReload(!isReload) 
         setIsModalConfirm(false)
@@ -198,11 +206,7 @@ const RepairCar = () => {
         </div>
       </div>
 
-      <TableBase
-        columns={columns}
-        dataSource={getProcessedData()}
-        emptyText="Không có xe nào đang sửa chữa"
-      />
+      <TableBase columns={columns} dataSource={getProcessedData()} emptyText="Không có xe nào đang sửa chữa" loading={loading}/>
     </div>
   )
 }

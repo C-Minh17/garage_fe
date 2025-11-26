@@ -13,7 +13,6 @@ const convertBrokenObjectToArray = (res: any): MService.IRecord[] => {
   if (!res) return []
   if (Array.isArray(res.data)) return res.data
   if (res.data && Array.isArray(res.data)) return res.data
-  
   if (res.data && typeof res.data === 'object') {
      return Object.values(res.data)
   }
@@ -41,6 +40,7 @@ const Services = () => {
   const [dataDetail, setDataDetail] = useState<MService.IRecord>()
 
   const [isReload, setIsReload] = useState(true)
+  const [loading, setLoading] = useState<boolean>(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("")
   const [isDesc, setIsDesc] = useState<boolean>(true)
@@ -117,7 +117,21 @@ const Services = () => {
     }
     fetchData()
   }, [isReload, debouncedSearchQuery, isDesc])
-  
+
+  useEffect(() => {
+    if (searchQuery) {
+      setLoading(true)
+      searchServices(searchQuery)
+        .then(res => setDataService(convertBrokenObjectToArray(res)))
+        .finally(() => setLoading(false))
+    } else {
+      setLoading(true)
+      getServices()
+        .then(res => setDataService(convertBrokenObjectToArray(res)))
+        .finally(() => setLoading(false))
+    }
+  }, [searchQuery, isReload])
+
 
   return (
     <>
@@ -169,7 +183,8 @@ const Services = () => {
         </div>
       </div>
 
-      <TableBase columns={Columns} dataSource={dataService} />
+      <TableBase columns={Columns} dataSource={dataService} loading={loading} />
+      
     </>
   )
 }
