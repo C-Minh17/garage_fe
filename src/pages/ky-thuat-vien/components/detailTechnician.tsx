@@ -78,7 +78,7 @@ const DetailTechnician = ({ data }: IDetailTechnician) => {
 
       <div style={{ ...rowStyle, borderBottom: "none" }}>
         <div style={labelStyle}>Lương cơ bản:</div>
-        <div style={{ ...valueStyle, color: "#d4380d", fontWeight: "bold" }}>
+        <div style={{ ...valueStyle, fontWeight: "bold" }}>
           {data?.baseSalary ? Number(data.baseSalary).toLocaleString("vi-VN") + " VNĐ" : "0 VNĐ"}
         </div>
       </div>

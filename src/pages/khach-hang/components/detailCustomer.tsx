@@ -58,7 +58,7 @@ const DetailCustomer = ({ data }: IDetailCustomer) => {
 
           <div style={rowStyle}>
             <div style={labelStyle}>Số điện thoại:</div>
-            <div style={{ ...valueStyle, color: "#1890ff" }}>{data?.phone || "-"}</div>
+            <div style={{ ...valueStyle }}>{data?.phone || "-"}</div>
           </div>
 
           <div style={rowStyle}>

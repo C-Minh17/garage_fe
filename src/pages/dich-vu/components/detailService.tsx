@@ -41,7 +41,7 @@ const DetailService = ({ data }: IDetailService) => {
 
       <div style={rowStyle}>
         <div style={labelStyle}>Mã dịch vụ:</div>
-        <div style={{ ...valueStyle, color: ColorStyle.Primary, fontWeight: "bold" }}>
+        <div style={{ ...valueStyle, fontWeight: "bold" }}>
             {data?.serviceCode || "-"}
         </div>
       </div>
