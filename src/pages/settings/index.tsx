@@ -4,7 +4,7 @@ import { getProfile, postProfileAvatar } from "../../services/api/profileApi";
 import Button from "../../components/Button";
 import BaseModal from "../../components/baseModal";
 import FormProfile from "./components/formProfile";
-import avatarDefaulf from "../../assets/avatar-hai-1-1.jpg"
+import avatarDefaulf from "../../assets/user-default.jpg"
 
 
 const Profile = () => {
