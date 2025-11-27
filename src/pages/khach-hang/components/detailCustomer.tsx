@@ -58,7 +58,7 @@ const DetailCustomer = ({ data }: IDetailCustomer) => {
 
           <div style={rowStyle}>
             <div style={labelStyle}>Số điện thoại:</div>
-            <div style={{ ...valueStyle, color: "#1890ff" }}>{data?.phone || "-"}</div>
+            <div style={{ ...valueStyle }}>{data?.phone || "-"}</div>
           </div>
 
           <div style={rowStyle}>
@@ -77,8 +77,8 @@ const DetailCustomer = ({ data }: IDetailCustomer) => {
           </div>
         </div>
         {/* listCar */}
-        <div style={{ width: "250px", background: "#f9f9f9", padding: "10px", borderRadius: "8px" }}>
-             <h5 style={{ borderBottom: "2px solid #faad14", paddingBottom: 5, marginBottom: 15 }}>
+        <div style={{ width: "250px", background: "#f9f9f9", padding: "10px", borderRadius: "8px"}}>
+             <h5 style={{ borderBottom: "2px solid #faad14", paddingBottom: 5, marginBottom: 15}}>
                 Xe sở hữu ({data?.cars?.length || 0})
              </h5>
              <div style={{ maxHeight: "250px", overflowY: "auto" }}>

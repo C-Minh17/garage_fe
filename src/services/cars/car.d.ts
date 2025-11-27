@@ -17,5 +17,6 @@ declare namespace  MCar {
     customerId: string;
     customerCode: string;
     active: boolean;
+    createdAt?: string;
   }
 }

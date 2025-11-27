@@ -8,6 +8,7 @@ declare namespace MTechnician {
     position?: string
     userId?: string
     active?: boolean
+    createdAt?: string
   }
     interface IRequest {
     name: string

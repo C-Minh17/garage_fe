@@ -71,7 +71,7 @@ const Customers = () => {
       render: (value) => <div style={{ minWidth: "150px" }}>{value}</div>,
     },
     {
-      title: "Thao tác",
+      title: <div style={{ textAlign: "center" }}>Thao tác</div>,
       render: (value, record) => (
         <div style={{ textAlign: "center", display: "flex", justifyContent: "center", gap: 5 }}>
           <Button onClick={() => { setDataCustomerId(record); setIsModalDetail(true) }} type="viewDetail" style={{ padding: 0, width: 23, height: 23 }}>

@@ -1,21 +1,29 @@
 import { useEffect, useState } from "react"
-import { getServices, delService, searchServices } from "../../services/api/servicesApi"
+import { getServices, delService, searchServices, sortServices } from "../../services/api/servicesApi"
 import TableBase, { Column } from "../../components/BaseTable"
 import Button from "../../components/Button"
 import BaseModal from "../../components/baseModal"
 import FormService from "./components/form"
 import DetailService from "./components/detailService"
-import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye, AiOutlineSearch, AiTwotoneCloseCircle } from "react-icons/ai"
+import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye, AiOutlineSearch, AiTwotoneCloseCircle, AiOutlineSortAscending, AiOutlineSortDescending } from "react-icons/ai"
 import { Input } from "../../components/FormBase"
 import { notify } from "../../components/Notification"
 
 const convertBrokenObjectToArray = (res: any): MService.IRecord[] => {
   if (!res) return []
-  if (res.data) return []
-  const dataArray = Object.keys(res)
+  if (Array.isArray(res.data)) return res.data
+  if (res.data && Array.isArray(res.data)) return res.data
+  if (res.data && typeof res.data === 'object') {
+     return Object.values(res.data)
+  }
+
+  if (typeof res === 'object') {
+     const dataArray = Object.keys(res)
     .filter(key => !isNaN(Number(key)))
     .map(key => (res as any)[key]);
-  return dataArray
+     return dataArray
+  }
+  return []
 }
 
 const Services = () => {
@@ -32,8 +40,10 @@ const Services = () => {
   const [dataDetail, setDataDetail] = useState<MService.IRecord>()
 
   const [isReload, setIsReload] = useState(true)
+  const [loading, setLoading] = useState<boolean>(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("")
+  const [isDesc, setIsDesc] = useState<boolean>(true)
 
   const Columns: Column<MService.IRecord>[] = [
     { title: "Mã dịch vụ", dataIndex: "serviceCode" },
@@ -41,7 +51,7 @@ const Services = () => {
     { title: "Giá (VNĐ)", dataIndex: "price", render: (value) => <div>{Number(value)?.toLocaleString()}</div> },
     { title: "Mô tả", dataIndex: "description" },
     {
-      title: "Thao tác",
+      title: <div style={{ textAlign: "center" }}>Thao tác</div>,
       width: 100,
       render: (value, record, index) => (
         <div style={{ textAlign: "center", display: "flex", justifyContent: "center", gap: 5 }}>
@@ -94,7 +104,7 @@ const Services = () => {
         if (debouncedSearchQuery) {
           res = await searchServices(debouncedSearchQuery)
         } else {
-          res = await getServices()
+          res = await sortServices(!isDesc)
         }
 
         const workingArray = convertBrokenObjectToArray(res)
@@ -106,7 +116,22 @@ const Services = () => {
       }
     }
     fetchData()
-  }, [isReload, debouncedSearchQuery])
+  }, [isReload, debouncedSearchQuery, isDesc])
+
+  useEffect(() => {
+    if (searchQuery) {
+      setLoading(true)
+      searchServices(searchQuery)
+        .then(res => setDataService(convertBrokenObjectToArray(res)))
+        .finally(() => setLoading(false))
+    } else {
+      setLoading(true)
+      getServices()
+        .then(res => setDataService(convertBrokenObjectToArray(res)))
+        .finally(() => setLoading(false))
+    }
+  }, [searchQuery, isReload])
+
 
   return (
     <>
@@ -141,17 +166,25 @@ const Services = () => {
       </div>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "end" }}>
-        <AiOutlineSearch />
-        <Input
-          name="search"
-          style={{ width: 230, margin: "10px 10px", marginRight: 25, borderRadius: 7 }}
-          placeholder="Tìm theo mã, tên, ..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+        <Button onClick={() => setIsDesc(!isDesc)} type="dashed" style={{ marginRight: 10, display: 'flex', alignItems: 'center', gap: 5, height: 38 }}>
+            {isDesc ? <AiOutlineSortDescending size={20} /> : <AiOutlineSortAscending size={20} />}
+            {isDesc ? "Mới nhất" : "Cũ nhất"}
+        </Button>
+
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+          <AiOutlineSearch style={{ position: 'absolute', left: 15, zIndex: 1 }} />
+          <Input
+            name="search"
+            style={{ width: 230, margin: "10px 10px", marginRight: 25, borderRadius: 7 }}
+            placeholder="Tìm theo mã, tên, ..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
       </div>
 
-      <TableBase columns={Columns} dataSource={dataService} />
+      <TableBase columns={Columns} dataSource={dataService} loading={loading} />
+      
     </>
   )
 }
