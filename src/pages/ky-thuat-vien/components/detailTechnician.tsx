@@ -70,7 +70,7 @@ const DetailTechnician = ({ data }: IDetailTechnician) => {
       <div style={rowStyle}>
         <div style={labelStyle}>Trạng thái:</div>
         <div style={valueStyle}>
-          <span style={{color: data?.active ? ColorStyle.Success : "#faad14",fontWeight: 600}}>
+          <span style={{color: data?.active ? ColorStyle.Success : "#dc3545",fontWeight: 600}}>
             {data?.active ? "Hoạt động" : "Không hoạt động"}
           </span>
         </div>
