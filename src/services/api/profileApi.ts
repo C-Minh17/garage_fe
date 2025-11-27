@@ -19,7 +19,7 @@ const putProfilePass = async (data: {
   return res
 }
 
-const postProfilePass = async (data: {
+const postProfileAvatar = async (data: {
   file: string
 }) => {
   const res = await axios.post(`${ipProfile}/avatar`, data)
@@ -42,6 +42,6 @@ export {
   getProfileFieid,
   putProfile,
   putProfilePass,
-  postProfilePass,
+  postProfileAvatar,
   deleteAvarta,
 }
