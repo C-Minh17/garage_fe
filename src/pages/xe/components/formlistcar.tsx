@@ -120,14 +120,14 @@ const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IF
                 border: "1px solid #dee2e6", 
                 borderRadius: "6px",
                 backgroundColor: isActive ? "#f6ffed" : "#fff1f0",
-                borderColor: isActive ? "#b7eb8f" : "#ffa39e"
+                borderColor: isActive ? "#72c1fdff" : "#ffd666ff"
             }}>
                 <BForm.Check 
                     type="switch"
                     id="car-status-switch"
                     label={isActive ? 
                         <span style={{color: ColorStyle.Primary, fontWeight: 600}}>Đã sửa xong / Chờ thanh toán</span> : 
-                        <span style={{color: "#faad14", fontWeight: 600}}>Đang sửa chữa</span>
+                        <span style={{color: "#faad14", fontWeight: 600}}>Sửa chữa</span>
                     }
                     checked={isActive}
                     onChange={(e) => setIsActive(e.target.checked)}
