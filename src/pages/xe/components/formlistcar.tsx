@@ -1,7 +1,8 @@
-import { Col, Container, Row } from "react-bootstrap";
-import React from "react";
+import { Col, Container, Row, Form as BForm } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
 import Form from "../../../components/FormBase";
 import Button from "../../../components/Button";
+import { ColorStyle } from "../../../styles/colors";
 import { notify } from "../../../components/Notification";
 import { postCar, putCar } from "../../../services/api/carApi";
 import CustomerSelect from "../../khach-hang/components/select";
@@ -15,6 +16,15 @@ interface IFormCar {
 }
 
 const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IFormCar) => {
+  const [isActive, setIsActive] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (method === 'put' && valueInitial) {
+      setIsActive(valueInitial.active);
+    } else {
+      setIsActive(false);
+    }
+  }, [valueInitial, method]);
 
   const onSubmit = async (data: any) => {
     const customerId = method === "post" ? data.customerId : valueInitial?.customerId;
@@ -36,7 +46,8 @@ const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IF
       manufacturer: data.manufacturer || "",
       description: data.description || "",
       customerId: customerId,
-      active: method === "put" ? valueInitial?.active : false 
+      // active: method === "put" ? valueInitial?.active : false 
+      active: isActive,
     };
 
     let res: any;
@@ -102,7 +113,27 @@ const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IF
             <label className="form-label mb-1">Mẫu xe</label>
             <Form.Input name="model" placeholder="VD: Vios" />
           </Col>
-
+          <Col sm={12}>
+            <label className="form-label mb-1">Trạng thái xe</label>
+            <div style={{ 
+                padding: "10px", 
+                border: "1px solid #dee2e6", 
+                borderRadius: "6px",
+                backgroundColor: isActive ? "#f6ffed" : "#fff1f0",
+                borderColor: isActive ? "#b7eb8f" : "#ffa39e"
+            }}>
+                <BForm.Check 
+                    type="switch"
+                    id="car-status-switch"
+                    label={isActive ? 
+                        <span style={{color: ColorStyle.Primary, fontWeight: 600}}>Đã sửa xong / Chờ thanh toán</span> : 
+                        <span style={{color: "#faad14", fontWeight: 600}}>Đang sửa chữa</span>
+                    }
+                    checked={isActive}
+                    onChange={(e) => setIsActive(e.target.checked)}
+                />
+            </div>
+          </Col>          
           <Col sm={12}>
             <label className="form-label mb-1">Mô tả</label>
             <Form.Input name="description" placeholder="Mô tả (Tình trạng xe, vết xước...)" />

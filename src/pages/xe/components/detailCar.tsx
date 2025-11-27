@@ -1,6 +1,6 @@
 import React from "react";
 import { ColorStyle } from "../../../styles/colors";
-
+import Form from "../../../components/FormBase";
 interface IDetailCar {
   data: MCar.IResponse | undefined;
 }
@@ -26,7 +26,7 @@ const DetailCar = ({ data }: IDetailCar) => {
 
   const renderStatus = (isActive: boolean) => {
     return isActive ? (
-      <span style={{ color: "#52c41a", fontWeight: 600 }}>Đang hoạt động</span>
+      <span style={{ color: ColorStyle.Primary, fontWeight: 600 }}>Chờ thanh toán</span>
     ) : (
       <span style={{ color: "#faad14", fontWeight: 600 }}>Đang sửa chữa</span>
     );
