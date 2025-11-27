@@ -30,7 +30,7 @@ const Technicians = () => {
   
   const [search, setSearch] = useState<string>("")
   const [debouncedSearch, setDebouncedSearch] = useState<string>("")
-
+  const [loading, setLoading] = useState<boolean>(true)
   const [isDesc, setIsDesc] = useState<boolean>(true) 
 
   const columns: Column<MTechnician.IRecord>[] = [
@@ -133,6 +133,19 @@ const Technicians = () => {
     setMethod(method || "post")
     setIsModal(true)
   }
+  useEffect(() => {
+    if (search) {
+      setLoading(true)
+      searchTechnicians(search)
+        .then(res => setDataTechnician(res.data ?? []))
+        .finally(() => setLoading(false))
+    } else {
+      setLoading(true)
+      getTechnicians()
+        .then(res => setDataTechnician(res?.data ?? []))
+        .finally(() => setLoading(false))
+    }
+  }, [search, isReload])
 
   return (
     <>
@@ -189,7 +202,7 @@ const Technicians = () => {
           </div>
         </div>
 
-        <TableBase columns={columns} dataSource={dataTechnician} />
+        <TableBase columns={columns} dataSource={dataTechnician} loading={loading} />
       </div>
     </>
   )

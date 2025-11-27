@@ -7,23 +7,6 @@ interface ApiResponse<T = any> {
   status?: number;
   data?: T;
 }
-// const getCustomers = async (): Promise<ApiResponse<MCustomer.IRecord[]>> => {
-//   // Dùng 'ipCustomer'
-//   const res: any = await axios.get(ipCustomer);
-
-//   if (res.success && res.data) {
-//     return res as ApiResponse<MCustomer.IRecord[]>;
-//   }
-//   if (res.success) {
-//     const { success, ...dataObjects } = res;
-//     const dataArray = Object.values(dataObjects);
-//     return {
-//       data: dataArray as MCustomer.IRecord[],
-//       success: true
-//     };
-//   }
-//   return res as ApiResponse<MCustomer.IRecord[]>;
-// }
 
 const getCar = async (): Promise<ApiResponse<MCar.IResponse[]>> => {
   const res: any = await axios.get(ipCar);
@@ -31,11 +14,9 @@ const getCar = async (): Promise<ApiResponse<MCar.IResponse[]>> => {
   if (res.success && res.data) {
     return res as ApiResponse<MCar.IResponse[]>;
   }
-
   if (res.success) {
     const { success, ...dataObjects } = res;
     const dataArray = Object.values(dataObjects);
-
     return {
       data: dataArray as MCar.IResponse[],
       success: true
@@ -100,5 +81,4 @@ export {
   deleteCar,
   getCarSorted,
   searchCar,
-  // getCustomers
 }

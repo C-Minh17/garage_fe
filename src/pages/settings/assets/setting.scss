@@ -26,17 +26,50 @@
     align-items: center;
     gap: 24px;
 
+    .avatar-box{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     .avatar-wrapper {
       width: 100px;
       height: 100px;
+      border-radius: 50%;
+      position: relative;
+      cursor: pointer;
 
       .avatar {
         width: 100%;
         height: 100%;
         border-radius: 50%;
         object-fit: cover;
+        display: block;
+      }
+      .avatar-overlay {
+        position: absolute;
+        bottom: 0; 
+        left: 0;
+        width: 100%;
+        height: 50%; 
+        border-radius: 0 0 50px 50px;
+        background: rgba(0,0,0,0.45);
+        opacity: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        transition: opacity 0.25s ease;
+        user-select: none;
+      }
+
+      &:hover .avatar-overlay {
+        opacity: 1;
       }
     }
+
     .updateAt{
       font-size: 12px;
       color: #8c8c8c;

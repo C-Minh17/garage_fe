@@ -125,7 +125,7 @@ const SiderManage = ({ isSider, setIsSider }: { isSider: boolean, setIsSider?: (
               { to: "/services", icon: <AiOutlineTool size={18} />, label: "Dịch vụ" },
               { to: "/parts", icon: <AiOutlineCodeSandbox size={18} />, label: "Phụ tùng" },
               { to: "/technicians", icon: <AiOutlineBranches size={18} />, label: "Kỹ thuật viên" },
-              { to: "/settings", icon: <AiOutlineSetting size={18} />, label: "Thông tin cá nhân" },
+              // { to: "/settings", icon: <AiOutlineSetting size={18} />, label: "Thông tin cá nhân" },
             ].map((item) => (
               <Link
                 key={item.to}
