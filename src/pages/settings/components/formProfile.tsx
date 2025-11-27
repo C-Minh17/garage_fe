@@ -1,8 +1,9 @@
 import { Col, Container, Row } from "react-bootstrap"
-import Form from "../../../components/FormBase"
+import Form, { Input } from "../../../components/FormBase"
 import Button from "../../../components/Button"
 import { notify } from "../../../components/Notification"
 import { putProfile } from "../../../services/api/profileApi"
+import { useState } from "react"
 
 
 interface IFormProfile {
@@ -13,9 +14,15 @@ interface IFormProfile {
 }
 
 const FormProfile = ({ valueInitial, setIsModal, isReload, setIsReload }: IFormProfile) => {
+  const [lickAvatar, setLinkAvatar] = useState<any>()
 
   const onSubmit = async (data: MProfile.IRecord) => {
     if (!valueInitial?.id) return
+    // const payData = {
+    //   ...data,
+    //   avatar: lickAvatar
+    // }
+    // console.log(payData)
     const res = await putProfile(data)
     if (res) {
       notify({ title: "Success", type: "success", description: "Thông tin cá nhân đã được cập nhật" })
@@ -37,11 +44,11 @@ const FormProfile = ({ valueInitial, setIsModal, isReload, setIsReload }: IFormP
             </Col>
             <Col xs={12} sm={6}>
               <label className="form-label required" style={{ margin: 5 }}>Email</label>
-              <Form.Input type="email" name="email" placeholder="example@gmail.com" required />
+              <Form.Input type="email" name="email" placeholder="example@gmail.com" required disabled />
             </Col>
             <Col xs={12} sm={6}>
               <label className="form-label required" style={{ margin: 5 }}>Số điện thoại</label>
-              <Form.Input name="phonenumber" placeholder="Nhập số điện thoại" required />
+              <Form.Input name="phonenumber" placeholder="Nhập số điện thoại" required disabled />
             </Col>
             <Col xs={12} sm={6}>
               <label className="form-label" style={{ margin: 5 }}>Ngày sinh</label>
@@ -63,10 +70,18 @@ const FormProfile = ({ valueInitial, setIsModal, isReload, setIsReload }: IFormP
               <label className="form-label" style={{ margin: 5 }}>Địa chỉ cụ thể</label>
               <Form.Input name="address" placeholder="Số nhà, đường..." />
             </Col>
-            <Col xs={12} sm={12}>
+            {/* <Col xs={12} sm={12}>
               <label className="form-label" style={{ margin: 5 }}>Ảnh đại diện (URL)</label>
-              <Form.Input type="file" name="avatar" placeholder="Đường dẫn ảnh đại diện" />
-            </Col>
+              <Input
+                type="file"
+                onChange={(e) => {
+                  const target = e.target as HTMLInputElement;
+                  const file = target.files?.[0];
+                  setLinkAvatar(file);
+                }}
+                name="avatar"
+              />
+            </Col> */}
             <Col xs={12} sm={12}>
               <label className="form-label" style={{ margin: 5 }}>Mô tả</label>
               <Form.Input name="description" placeholder="Mô tả ngắn về bản thân" />
