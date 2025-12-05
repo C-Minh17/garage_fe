@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react"
-import { getProfile } from "../../../services/api/profileApi"
 import avatarDefaulf from "../../../assets/user-default.jpg"
 import { useNavigate } from "react-router"
 import { ColorStyle } from "../../../styles/colors"
 import { AiOutlineLogout, AiOutlineUser } from "react-icons/ai"
+import useModelProfile from "../../../services/api/profileApi"
+import { ipRootServer } from "../../../utils/ip"
 
 const TagProfile = ({ logout }: { logout?: () => void }) => {
   const [dataProfile, setDataProfile] = useState<MProfile.IRecord>()
   const [isOpen, setIsOpen] = useState(false)
+  const { getProfile, isReload } = useModelProfile()
+
 
   const navigate = useNavigate()
 
   useEffect(() => {
     getProfile().then(res => setDataProfile(res as any))
-  }, [])
+  }, [isReload])
 
   return (
     <div
@@ -52,7 +55,7 @@ const TagProfile = ({ logout }: { logout?: () => void }) => {
             color: '#fff',
             fontWeight: 'bold'
           }}>
-            <img src={dataProfile?.avatar ? dataProfile.avatar : avatarDefaulf} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={dataProfile?.avatar ? `${ipRootServer}${dataProfile.avatar}` : avatarDefaulf} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
           <div style={{ fontSize: '16px', fontWeight: '500', color: '#333' }}>
             {dataProfile?.username}

@@ -77,10 +77,12 @@ const Suppliers = () => {
 
   useEffect(() => {
     if (querySearch) {
+      setLoading(true)
       getSupplierSearch(querySearch)
         .then(res => setDataSupplier(res?.data ? res.data : []))
         .finally(() => setLoading(false))
     } else {
+      setLoading(true)
       getSupplier()
         .then(res => setDataSupplier(res?.data ? res.data : []))
         .finally(() => setLoading(false))

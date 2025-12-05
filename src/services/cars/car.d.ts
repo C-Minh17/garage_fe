@@ -1,4 +1,4 @@
-declare namespace  MCar {
+declare namespace MCar {
   export interface IRequest {
     plate: string;
     model: string;

@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { ColorStyle } from "../../styles/colors"
 
 interface IButtonProps {
-  type?: "primary" | "default" | "dashed" | "text" | "link" | "gradientPrimary" | "error"|"viewDetail" | "success",
+  type?: "primary" | "default" | "dashed" | "text" | "link" | "gradientPrimary" | "error" | "viewDetail" | "success" | "orangeStyle",
   children: React.ReactNode,
   onClick?: () => void,
   disabled?: boolean,
@@ -71,7 +71,7 @@ const Button = ({
       color: "#fff",
       border: "none",
     },
-        viewDetail: {
+    viewDetail: {
       bg: "#f5f8ff",
       hover: "#dce7ff",
       active: "#b7ccff",
@@ -84,6 +84,13 @@ const Button = ({
       active: "#389e0d",
       color: "#fff",
       border: "none",
+    },
+    orangeStyle: {
+      bg: "hsl(25 95% 53%)",
+      hover: "hsl(25 95% 48%)",
+      active: "hsl(25 95% 43%)",
+      color: "#fff",
+      border: "1px solid hsl(25 95% 53%)",
     },
   }[type]
 
