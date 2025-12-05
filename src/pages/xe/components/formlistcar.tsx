@@ -8,7 +8,7 @@ import { postCar, putCar } from "../../../services/api/carApi";
 import CustomerSelect from "../../khach-hang/components/select";
 
 interface IFormCar {
-  valueInitial?: MCar.IResponse;
+  valueInitial?: Partial<MCar.IResponse>;
   method: "post" | "put";
   setIsModal?: (a: boolean) => void;
   isReload?: boolean;
@@ -20,7 +20,7 @@ const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IF
 
   useEffect(() => {
     if (method === 'put' && valueInitial) {
-      setIsActive(valueInitial.active);
+      setIsActive(!!valueInitial?.active);
     } else {
       setIsActive(false);
     }
@@ -37,8 +37,8 @@ const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IF
       return;
     }
     if (!data.plate) {
-        notify({ title: "Lỗi", type: "error", description: "Vui lòng nhập biển số xe!" });
-        return;
+      notify({ title: "Lỗi", type: "error", description: "Vui lòng nhập biển số xe!" });
+      return;
     }
     const payload: MCar.IRequest = {
       plate: data.plate,
@@ -57,8 +57,8 @@ const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IF
         res = await postCar(payload);
       } else {
         if (!valueInitial?.id) {
-            notify({ title: "Lỗi", type: "error", description: "Không tìm thấy ID xe cần sửa" });
-            return;
+          notify({ title: "Lỗi", type: "error", description: "Không tìm thấy ID xe cần sửa" });
+          return;
         }
         res = await putCar(valueInitial.id, payload);
       }
@@ -75,7 +75,7 @@ const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IF
         notify({ title: "Lỗi", type: "error", description: res?.message || "Có lỗi xảy ra từ phía server" });
       }
     } catch (error) {
-        notify({ title: "Lỗi hệ thống", type: "error", description: "Không thể kết nối đến server" });
+      notify({ title: "Lỗi hệ thống", type: "error", description: "Không thể kết nối đến server" });
     }
   };
 
@@ -90,9 +90,9 @@ const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IF
           <Col sm={12}>
             <label className="form-label required mb-1">Khách hàng</label>
             {method === "post" ? (
-              <CustomerSelect 
+              <CustomerSelect
                 method={method}
-                name="customerId" 
+                name="customerId"
               />
             ) : (
               <Form.Input name="customerCode" disabled />
@@ -115,25 +115,25 @@ const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IF
           </Col>
           <Col sm={12}>
             <label className="form-label mb-1">Trạng thái xe</label>
-            <div style={{ 
-                padding: "10px", 
-                border: "1px solid #dee2e6", 
-                borderRadius: "6px",
-                backgroundColor: isActive ? "#f6ffed" : "#fff1f0",
-                borderColor: isActive ? "#72c1fdff" : "#ffd666ff"
+            <div style={{
+              padding: "10px",
+              border: "1px solid #dee2e6",
+              borderRadius: "6px",
+              backgroundColor: isActive ? "#f6ffed" : "#fff1f0",
+              borderColor: isActive ? "#72c1fdff" : "#ffd666ff"
             }}>
-                <BForm.Check 
-                    type="switch"
-                    id="car-status-switch"
-                    label={isActive ? 
-                        <span style={{color: ColorStyle.Primary, fontWeight: 600}}>Đã sửa xong / Chờ thanh toán</span> : 
-                        <span style={{color: "#faad14", fontWeight: 600}}>Sửa chữa</span>
-                    }
-                    checked={isActive}
-                    onChange={(e) => setIsActive(e.target.checked)}
-                />
+              <BForm.Check
+                type="switch"
+                id="car-status-switch"
+                label={isActive ?
+                  <span style={{ color: ColorStyle.Primary, fontWeight: 600 }}>Đã sửa xong / Chờ thanh toán</span> :
+                  <span style={{ color: "#faad14", fontWeight: 600 }}>Sửa chữa</span>
+                }
+                checked={isActive}
+                onChange={(e) => setIsActive(e.target.checked)}
+              />
             </div>
-          </Col>          
+          </Col>
           <Col sm={12}>
             <label className="form-label mb-1">Mô tả</label>
             <Form.Input name="description" placeholder="Mô tả (Tình trạng xe, vết xước...)" />

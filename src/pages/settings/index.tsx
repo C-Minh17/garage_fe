@@ -1,50 +1,42 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./assets/setting.scss";
-import { getProfile, postProfileAvatar } from "../../services/api/profileApi";
 import Button from "../../components/Button";
 import BaseModal from "../../components/baseModal";
 import FormProfile from "./components/formProfile";
 import avatarDefaulf from "../../assets/user-default.jpg"
+import useModelProfile from "../../services/api/profileApi";
+import { ipProfile, ipRoot, ipRootServer } from "../../utils/ip";
 
 
 const Profile = () => {
   const [dataProfile, setDataProfile] = useState<MProfile.IRecord>()
   const [isModal, setIsModal] = useState<boolean>(false)
-  const [isReload, setIsReload] = useState<boolean>(false)
-  const [lickAvatar, setLinkAvatar] = useState<any>()
-
-
-  const handleUploadAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileObj = e.target.files?.[0];
-    if (!fileObj) return;
-
-  }
+  const { getProfile, postProfileAvatar, isReload } = useModelProfile()
 
   useEffect(() => {
     getProfile().then(res => setDataProfile(res as any))
   }, [isReload])
 
-  console.log(lickAvatar?.name)
+  console.log(dataProfile)
   return (
     <>
       <BaseModal
         isOpen={isModal}
         closeModal={() => setIsModal(false)}
       >
-        <FormProfile valueInitial={dataProfile} isReload={isReload} setIsModal={setIsModal} setIsReload={setIsReload} />
+        <FormProfile valueInitial={dataProfile} isReload={isReload} setIsModal={setIsModal} />
       </BaseModal>
       <div className="profile-page">
         <div className="profile-header card">
           <div className="avatar-box">
             <div className="avatar-wrapper">
               <img
-                src={dataProfile?.avatar ? dataProfile.avatar : avatarDefaulf}
+                src={dataProfile?.avatar ? `${ipRootServer}${dataProfile.avatar}` : avatarDefaulf}
                 alt="Avatar"
                 className="avatar"
               />
               <div
                 className="avatar-overlay"
-                onChange={handleUploadAvatar}
               >
                 <span className="edit-btn">Sửa</span>
                 <input
@@ -59,10 +51,10 @@ const Profile = () => {
                     cursor: 'pointer',
                     zIndex: 10
                   }}
-                  onChange={(e) => {
+                  onChange={async (e) => {
                     const target = e.target as HTMLInputElement;
                     const file = target.files?.[0];
-                    setLinkAvatar(file);
+                    await postProfileAvatar(file)
                   }}
                 />
               </div>

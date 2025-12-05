@@ -55,20 +55,18 @@ const Select = ({ name, options, multiple = false, placeholder = "Select..." }: 
     o.label.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Close dropdown khi click ngoài
-  // useEffect(() => {
-  //   const handleClickOutside = (e: MouseEvent) => {
-  //     if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-  //       setOpen(false);
-  //     }
-  //   };
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => document.removeEventListener("mousedown", handleClickOutside);
-  // }, []);
-  // ref={containerRef}
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <div className="antd-select" >
+    <div className="antd-select" ref={containerRef}>
       <div className={`select-input ${open ? "open" : ""}`} onClick={toggleOpen}>
         {multiple && selected.length > 0 ? (
           <div className="tags">
