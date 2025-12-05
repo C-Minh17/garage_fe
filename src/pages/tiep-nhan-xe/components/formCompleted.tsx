@@ -4,7 +4,7 @@ import SelectTechnician from "../../ky-thuat-vien/components/selectTechnician";
 import SelectServices from "../../dich-vu/components/selectServices";
 import Button from "../../../components/Button";
 import { AiOutlineArrowLeft, AiOutlineDelete, AiOutlineDownCircle, AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TableBase, { Column } from "../../../components/BaseTable";
 import BaseModal from "../../../components/baseModal";
 import SelectPart from "../../phu-tung/components/selectPart";
@@ -31,14 +31,14 @@ const FormCompleteOrder = (props: IFormCompleteOrder) => {
   const [parts, setParts] = useState<IPartItem[]>([])
   const [isModalPart, setIsModalPart] = useState<boolean>(false)
   const [orderId, setOrderId] = useState<MRepairOrder.IRecord>()
+  const [isSave, setIsSave] = useState<boolean>(false)
 
   const onSubmit = async (e: any) => {
     const dataPay = {
       ...e,
       parts: parts,
-      status: "COMPLETED"
+      status: isSave ? "IN_PROGRESS" : "COMPLETED"
     }
-    // console.log("dataa---", dataPay)
     const res = await putRepairOrder(dataPay.id, dataPay)
     if (res.success) {
       notify({ title: "Success", type: "success", description: "Hóa đơn đã hoàn thành" })
@@ -101,6 +101,9 @@ const FormCompleteOrder = (props: IFormCompleteOrder) => {
       )
     }
   ]
+  useEffect(() => {
+    setParts(orderData?.parts as any[])
+  }, [])
 
   return (
     <>
@@ -171,6 +174,15 @@ const FormCompleteOrder = (props: IFormCompleteOrder) => {
               type="orangeStyle"
               style={{ margin: "10px 10px" }}
               htmlType="submit"
+              onClick={() => setIsSave(true)}
+            >
+              <AiOutlineDownCircle /> Lưu lại
+            </Button>
+            <Button
+              type="gradientPrimary"
+              style={{ margin: "10px 10px" }}
+              htmlType="submit"
+              onClick={() => setIsSave(false)}
             >
               <AiOutlineDownCircle /> Xuất hóa đơn
             </Button>
