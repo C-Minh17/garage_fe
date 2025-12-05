@@ -4,6 +4,7 @@ declare module MService {
     serviceCode: string
     name: string
     description: string
-    price: number  
+    price: number
+
   }
 }

@@ -4,12 +4,6 @@ import Button from "../../../components/Button"
 import { postCustomer, putCustomer } from "../../../services/api/customerApi"
 import { notify } from "../../../components/Notification"
 
-interface ApiResponse<T = any> {
-  success?: boolean
-  message?: string
-  status?: number
-  data?: T
-}
 
 interface IFormCustomer {
   valueInitial?: MCustomer.IRecord,
@@ -23,7 +17,7 @@ const FormCustomer = ({ valueInitial, method, setIsModal, isReload, setIsReload 
 
   const onSubmit = async (data: MCustomer.IRecord) => {
     if (method === "post") {
-      const res: ApiResponse = await postCustomer(data)
+      const res = await postCustomer(data)
       if (res.success) {
         notify({ title: "Success", type: "success", description: "Đã thêm khách hàng thành công" })
         setIsReload?.(!isReload)
@@ -32,7 +26,7 @@ const FormCustomer = ({ valueInitial, method, setIsModal, isReload, setIsReload 
         notify({ title: "Error", type: "error", description: res.message })
       }
     } else if (method === "put") {
-      const res: ApiResponse = await putCustomer(valueInitial!.id!, data)
+      const res = await putCustomer(valueInitial!.id!, data)
       if (res.success) {
         notify({ title: "Success", type: "success", description: "Thông tin khách hàng đã được cập nhật" })
         setIsReload?.(!isReload)

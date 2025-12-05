@@ -1,12 +1,6 @@
 import axios from "../../utils/axios"
 import { ipSupplier } from "../../utils/ip"
 
-interface ApiResponse<T = any> {
-  success?: boolean
-  message?: string
-  status?: number
-  data?: T
-}
 
 const getSupplier = async () => {
   const res = await axios.get(`${ipSupplier}`)

@@ -155,12 +155,12 @@ const Customers = () => {
     if (querySearch) {
       setLoading(true)
       getCustomerSearch(querySearch)
-        .then(res => setDataCustomer(res?.data))
+        .then(res => setDataCustomer(res?.data ? res.data : []))
         .finally(() => setLoading(false))
     } else {
       setLoading(true)
       getCustomers()
-        .then(res => setDataCustomer(res?.data))
+        .then(res => setDataCustomer(res?.data ? res.data : []))
         .finally(() => setLoading(false))
     }
 

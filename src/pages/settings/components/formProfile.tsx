@@ -2,8 +2,9 @@ import { Col, Container, Row } from "react-bootstrap"
 import Form, { Input } from "../../../components/FormBase"
 import Button from "../../../components/Button"
 import { notify } from "../../../components/Notification"
-import { putProfile } from "../../../services/api/profileApi"
 import { useState } from "react"
+import useModelProfile from "../../../services/api/profileApi"
+import Select from "../../../components/Select"
 
 
 interface IFormProfile {
@@ -14,15 +15,10 @@ interface IFormProfile {
 }
 
 const FormProfile = ({ valueInitial, setIsModal, isReload, setIsReload }: IFormProfile) => {
-  const [lickAvatar, setLinkAvatar] = useState<any>()
+  const { putProfile } = useModelProfile()
 
   const onSubmit = async (data: MProfile.IRecord) => {
     if (!valueInitial?.id) return
-    // const payData = {
-    //   ...data,
-    //   avatar: lickAvatar
-    // }
-    // console.log(payData)
     const res = await putProfile(data)
     if (res) {
       notify({ title: "Success", type: "success", description: "Thông tin cá nhân đã được cập nhật" })
@@ -56,7 +52,20 @@ const FormProfile = ({ valueInitial, setIsModal, isReload, setIsReload }: IFormP
             </Col>
             <Col xs={12} sm={6}>
               <label className="form-label" style={{ margin: 5 }}>Giới tính</label>
-              <Form.Input name="gender" placeholder="Nam/Nữ" />
+              <Select name="gender" options={[
+                {
+                  value: "Nam",
+                  label: "Nam"
+                },
+                {
+                  value: "Nữ",
+                  label: "Nữ"
+                },
+                {
+                  value: "LGBT",
+                  label: "LGBT"
+                }
+              ]} />
             </Col>
             <Col xs={12} sm={6}>
               <label className="form-label" style={{ margin: 5 }}>Quê quán</label>
