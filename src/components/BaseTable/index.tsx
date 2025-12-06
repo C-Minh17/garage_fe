@@ -34,8 +34,10 @@ const TableBase = <T,>({
   const [pageNumber, setPagenumber] = useState<number>(1)
   const totalPage = Math.ceil(dataSource?.length / pageSize);
   const slPage = Array.from({ length: totalPage });
+
   const getRowKey = (record: T, index: number) => {
-    if (rowkey === "id") return (record as any)[rowkey] ?? index
+    const key = (record as any)[rowkey];
+    return key ?? index;
   }
 
   const nextPage = () => {
@@ -76,7 +78,6 @@ const TableBase = <T,>({
           </thead>
           <tbody>
             {loading ? <tr><td colSpan={columns?.length} style={{ paddingTop: "30px" }}>
-              {/* <FourSquare color={["#32cd32", "#327fcd", "#cd32cd", "#cd8032"]} size="small" /> */}
               <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                 <div className="loader"></div>
                 <p style={{ fontSize: 16, fontWeight: 500 }}>Đang tải dữ liệu ...</p>

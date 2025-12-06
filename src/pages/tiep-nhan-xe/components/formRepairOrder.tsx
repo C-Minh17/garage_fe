@@ -7,6 +7,7 @@ import { AiOutlineArrowLeft, AiOutlineDownCircle } from "react-icons/ai"
 import { postRepairOrder } from "../../../services/api/repairOrderApi"
 import { notify } from "../../../components/Notification"
 import { useNavigate } from "react-router"
+import { putCar } from "../../../services/api/carApi"
 
 interface IFormRepairOrder {
   targetCar?: MCar.IResponse,
@@ -27,9 +28,9 @@ const FormRepairOrder = (props: IFormRepairOrder) => {
       carId: targetCar?.id,
       status: "IN_PROGRESS",
     }
-    console.log("fisst", dataPay)
     const res = await postRepairOrder(dataPay)
     if (res.message) {
+      const res = await putCar(dataPay.carId as string, { active: true } as MCar.IRequest)
       notify({ title: "Success", type: "success", description: "Đã thêm nhà cung cấp mới" })
       navigate("/payment")
     } else {

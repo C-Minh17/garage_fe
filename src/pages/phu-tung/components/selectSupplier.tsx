@@ -6,8 +6,9 @@ const SelectSupplier = (props: {
   name: string,
   multiple?: boolean;
   placeholder?: string;
+  onChange?: (value: any) => void;
 }) => {
-  const { name, multiple, placeholder } = props
+  const { name, multiple, placeholder, onChange } = props
   const [data, setData] = useState<MSupplier.IRecord[]>([])
 
 
@@ -22,7 +23,7 @@ const SelectSupplier = (props: {
 
 
   return (
-    <Select name={name} options={dataOptions} />
+    <Select name={name} options={dataOptions} onChange={onChange} />
   )
 
 }
