@@ -36,7 +36,7 @@ const HistoryPayment = () => {
       dataIndex: "repairOrder",
       width: 200,
       render: (_, record) => (
-        <div>{`${record?.repairOrder.car.model} (${record?.repairOrder.car.plate})`}</div>
+        <div>{`${record?.repairOrder.car?.model} (${record?.repairOrder.car?.plate})`}</div>
       )
     },
     {

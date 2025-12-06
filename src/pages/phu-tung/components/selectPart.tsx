@@ -7,10 +7,10 @@ const SelectPart = (props: {
   name: string,
   multiple?: boolean;
   placeholder?: string;
+  supllierId?: string;
 }) => {
-  const { name, multiple, placeholder } = props
+  const { name, multiple, placeholder, supllierId = '' } = props
   const [data, setData] = useState<MPart.IRecord[]>([])
-
 
   const dataOptions = data?.map(item => ({
     label: `${item.name}(${item.partCode})`,
@@ -18,7 +18,7 @@ const SelectPart = (props: {
   }))
 
   useEffect(() => {
-    getPart().then(res => setData(res.data ? res.data : []))
+    getPart().then(res => setData(res.data ? res.data.filter(item => item.supplier.id === supllierId) : []))
   }, [])
 
 

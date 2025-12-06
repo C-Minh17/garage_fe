@@ -31,26 +31,7 @@ const ListCars = () => {
     { title: "Biển số xe", dataIndex: "plate", width: 120 },
     { title: "Hãng xe", dataIndex: "manufacturer", width: 150 },
     { title: "Mẫu xe", dataIndex: "model", width: 150 },
-    { title: "Mô tả lỗi/tình trạng", dataIndex: "description", width: 300 },
-    { 
-      title: "Trạng thái", 
-      dataIndex: "active", 
-      width: 150,
-      render: (active: boolean) => (
-        <div style={{
-            display: 'inline-block',
-            padding: '4px 10px',
-            borderRadius: '6px',
-            fontSize: '12px',
-            fontWeight: 600,
-            backgroundColor: active ? '#f6ffed' : '#fff7e6',
-            color: active ? ColorStyle.Primary : '#faad14',
-            border: `1px solid ${active ? ColorStyle.Primary : '#ffd591'}`
-        }}>
-            {active ? "Chờ thanh toán" : "Đang sửa chữa"}
-        </div>
-      )
-    },
+    { title: "Mô tả ", dataIndex: "description", width: 300 },
     {
       title: <div style={{ textAlign: "center" }}>Thao tác</div>,
       width: 80,
@@ -76,7 +57,7 @@ const ListCars = () => {
   }, [search])
 
   const fetchCars = async () => {
-    setLoading(true) 
+    setLoading(true)
     try {
       let res
       if (debouncedSearch) {

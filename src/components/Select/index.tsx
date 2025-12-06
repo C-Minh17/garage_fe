@@ -13,9 +13,10 @@ export interface ISelectProps {
   options: Option[];
   multiple?: boolean;
   placeholder?: string;
+  onChange?: (value: any) => void;
 }
 
-const Select = ({ name, options, multiple = false, placeholder = "Select..." }: ISelectProps) => {
+const Select = ({ name, options, multiple = false, placeholder = "Select...", onChange }: ISelectProps) => {
   const { values, setFieldValue } = useContext(FormContext);
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -42,12 +43,17 @@ const Select = ({ name, options, multiple = false, placeholder = "Select..." }: 
         ? selected.filter(s => s.value !== option.value)
         : [...selected, option];
       setSelected(newSelected);
-      setFieldValue(name, newSelected.map(s => s.value));
+      const finalValues = newSelected.map(s => s.value);
+      setFieldValue(name, finalValues);
+
+      if (onChange) onChange(finalValues);
     } else {
       newSelected = [option];
       setSelected(newSelected);
       setFieldValue(name, option.value);
       setOpen(false);
+
+      if (onChange) onChange(option.value);
     }
   };
 

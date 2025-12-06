@@ -42,7 +42,7 @@ const BillPaymentd = () => {
       dataIndex: "car",
       width: 250,
       render: (_, record) => (
-        <div>{`${record.car.model} (${record.car.plate})`}</div>
+        <div>{`${record.car?.model} (${record.car?.plate})`}</div>
       )
     },
     {

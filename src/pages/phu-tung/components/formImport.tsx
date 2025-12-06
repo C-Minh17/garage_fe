@@ -9,43 +9,54 @@ import TableBase, { Column } from "../../../components/BaseTable";
 import BaseModal from "../../../components/baseModal";
 import SelectPart from "../../phu-tung/components/selectPart";
 import SelectSupplier from "./selectSupplier";
+import { postImportItem } from "../../../services/api/importItemApi";
+import { notify } from "../../../components/Notification";
 
 interface IFormImport {
-  orderData?: MRepairOrder.IRecord
+  orderData?: MRepairOrder.IRecord,
+  setIsReload?: (a: boolean) => void,
+  isReload?: boolean,
+  setIsModal?: (a: boolean) => void,
 }
 
-interface IPartItem {
-  id: string,
-  name: string,
-  unitPrice: number,
-  quantity: number,
-  total: number
-}
 
 const FormImport = (props: IFormImport) => {
-  const { orderData } = props
-  const [parts, setParts] = useState<IPartItem[]>([])
+  const { orderData, setIsReload, setIsModal, isReload } = props
+  const [parts, setParts] = useState<MImportItem.IParts[]>([])
   const [isModalPart, setIsModalPart] = useState<boolean>(false)
   const [orderId, setOrderId] = useState<MRepairOrder.IRecord>()
+  const [selectedSupplierId, setSelectedSupplierId] = useState<any>(null);
 
-  const onSubmit = (e: any) => {
-    console.log(e)
+  const onSubmit = async (e: any) => {
+    const d = new Date(e.date);
+    const dataPay = {
+      ...e,
+      parts: parts,
+      date: d.toISOString().replace("Z", ""),
+    }
+    const res = await postImportItem(dataPay)
+    if (res.success) {
+      notify({ title: "Success", type: "success", description: "Đã thêm nhà cung cấp mới" })
+      setIsReload?.(!isReload)
+      setIsModal?.(false)
+    } else {
+      notify({ title: "Error", type: "error", description: res.message })
+    }
   }
 
   const onSubmitPart = (e: any) => {
     const dataNameId = e.nameId.split("&&")
     const dataPart = {
-      id: dataNameId[0],
+      partId: dataNameId[0],
       name: dataNameId[1],
       unitPrice: dataNameId[2],
       quantity: e.quantity,
-      total: e.quantity * dataNameId[2]
     }
     setParts([...parts, dataPart])
     setIsModalPart(false)
   }
 
-  const columnsPart: Column<IPartItem>[] = [
+  const columnsPart: Column<MImportItem.IParts>[] = [
     {
       title: "Tên vật tư",
       dataIndex: "name"
@@ -57,15 +68,14 @@ const FormImport = (props: IFormImport) => {
     {
       title: "Đơn giá",
       dataIndex: "unitPrice",
-      render: (value) => (
+      render: (value, _, index) => (
         <div>{value.toLocaleString("vi-VN")}</div>
       )
     },
     {
       title: "Thành tiền",
-      dataIndex: "total",
-      render: (value) => (
-        <div>{value.toLocaleString("vi-VN")}</div>
+      render: (value, record, index) => (
+        <div>{(record.quantity * record.unitPrice).toLocaleString("vi-VN")}</div>
       )
     },
     {
@@ -73,7 +83,7 @@ const FormImport = (props: IFormImport) => {
       render: (value, record, index) => (
         <div style={{ display: "flex", justifyContent: "center", gap: 5 }}>
           <Button onClick={() => {
-            setParts(pre => pre.filter(item => item.id !== record.id))
+            setParts(pre => pre.filter(item => item.partId !== record.partId))
           }}
             type="error"
             style={{ padding: 0, width: 20, height: 20, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}
@@ -96,7 +106,7 @@ const FormImport = (props: IFormImport) => {
             <Row className="gy-2 gx-2">
               <Col xs={12} sm={6}>
                 <label className="form-label required" style={{ margin: 5 }}>Phụ tùng</label>
-                <SelectPart name="nameId" />
+                <SelectPart supllierId={selectedSupplierId} name="nameId" />
               </Col>
               <Col xs={12} sm={2}>
                 <label className="form-label required" style={{ margin: 5 }}>Số lượng</label>
@@ -115,13 +125,20 @@ const FormImport = (props: IFormImport) => {
           <Row className="gy-2 gx-2">
             <Col xs={12} sm={6}>
               <label className="form-label required" style={{ margin: 5 }}>Nhà cung cấp</label>
-              <SelectSupplier name="" />
+              <SelectSupplier
+                name="supplierId"
+                onChange={(val: any) => {
+                  setSelectedSupplierId(val);
+                  setParts([]);
+                }}
+              />
             </Col>
             <Col xs={12}>
               <label className="form-label" style={{ fontWeight: "bold" }}>Danh sách Vật tư / Phụ tùng nhập hàng</label>
               <TableBase
                 columns={columnsPart}
                 dataSource={parts}
+                rowkey="partId"
               />
               <div style={{ margin: "10px 5px", textAlign: "end" }}>
                 <Button onClick={() => setIsModalPart(true)} style={{ padding: "3px 10px" }}>+ Thêm phụ tùng</Button>
@@ -131,10 +148,10 @@ const FormImport = (props: IFormImport) => {
               <label className="form-label required" style={{ margin: 5 }}>Ngày nhập hàng</label>
               <Form.Input name="date" type="date" />
             </Col>
-            <Col xs={12} sm={12}>
+            {/* <Col xs={12} sm={12}>
               <label className="form-label" style={{ margin: 5 }}>Ghi chú</label>
               <Form.Input name="note" placeholder="Ghi chú ..." />
-            </Col>
+            </Col> */}
           </Row>
           <div style={{
             display: "flex",

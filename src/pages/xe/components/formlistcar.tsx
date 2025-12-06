@@ -113,27 +113,7 @@ const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IF
             <label className="form-label mb-1">Mẫu xe</label>
             <Form.Input name="model" placeholder="VD: Vios" />
           </Col>
-          <Col sm={12}>
-            <label className="form-label mb-1">Trạng thái xe</label>
-            <div style={{
-              padding: "10px",
-              border: "1px solid #dee2e6",
-              borderRadius: "6px",
-              backgroundColor: isActive ? "#f6ffed" : "#fff1f0",
-              borderColor: isActive ? "#72c1fdff" : "#ffd666ff"
-            }}>
-              <BForm.Check
-                type="switch"
-                id="car-status-switch"
-                label={isActive ?
-                  <span style={{ color: ColorStyle.Primary, fontWeight: 600 }}>Đã sửa xong / Chờ thanh toán</span> :
-                  <span style={{ color: "#faad14", fontWeight: 600 }}>Sửa chữa</span>
-                }
-                checked={isActive}
-                onChange={(e) => setIsActive(e.target.checked)}
-              />
-            </div>
-          </Col>
+
           <Col sm={12}>
             <label className="form-label mb-1">Mô tả</label>
             <Form.Input name="description" placeholder="Mô tả (Tình trạng xe, vết xước...)" />
