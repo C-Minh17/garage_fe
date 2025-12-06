@@ -140,7 +140,7 @@ const FormCompleteOrder = (props: IFormCompleteOrder) => {
             </Col>
             <Col xs={12} sm={6}>
               <label className="form-label required" style={{ margin: 5 }}>Xe</label>
-              <Input name="carId" disabled value={`${orderData?.car.model}(${orderData?.car.plate})`} />
+              <Input name="carId" disabled value={`${orderData?.car?.model}(${orderData?.car?.plate})`} />
             </Col>
             <Col xs={12} sm={12}>
               <label className="form-label required" style={{ margin: 5 }}>Kỹ thuật viên</label>

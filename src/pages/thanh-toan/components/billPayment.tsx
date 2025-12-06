@@ -42,7 +42,7 @@ const BillPaymentd = () => {
       dataIndex: "car",
       width: 250,
       render: (_, record) => (
-        <div>{`${record.car?.model} (${record.car?.plate})`}</div>
+        <div>{record.car ? `${record.car?.model} (${record.car?.plate})` : "Xe không tồn tại"}</div>
       )
     },
     {
@@ -130,6 +130,7 @@ const BillPaymentd = () => {
       .finally(() => setIsloading(false))
   }, [isReload])
 
+  console.log("mmm", dataRepairOrder)
 
   return (
     <>
