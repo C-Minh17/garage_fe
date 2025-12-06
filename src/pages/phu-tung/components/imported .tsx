@@ -6,6 +6,7 @@ import { getPayment } from "../../../services/api/paymentApi"
 import BaseModal from "../../../components/baseModal"
 import FormImport from "./formImport"
 import { getImportItem } from "../../../services/api/importItemApi"
+import ImportDetail from "./detailImport"
 
 const ImportItem = () => {
   const [dataImportItem, setDataImportItem] = useState<MImportItem.IRecord[]>([])
@@ -52,7 +53,7 @@ const ImportItem = () => {
       width: 100,
       render: (value, record) => (
         <div style={{ display: "flex", justifyContent: "center", gap: 5 }}>
-          <Button onClick={() => { }} type="viewDetail" style={{ padding: 0, width: 23, height: 23 }}>
+          <Button onClick={() => { setImportItemDetail(record); setIsModalDetail(true) }} type="viewDetail" style={{ padding: 0, width: 23, height: 23 }}>
             <AiOutlineEye />
           </Button>
         </div>
@@ -75,6 +76,14 @@ const ImportItem = () => {
       >
         <FormImport setIsModal={setIsModalForm} isReload={isReload} setIsReload={setIsReload} />
       </BaseModal>
+
+      <BaseModal
+        isOpen={isModalDetail}
+        closeModal={() => setIsModalDetail(false)}
+      >
+        <ImportDetail data={importItemDetail} />
+      </BaseModal>
+
       <div style={{
         margin: "40px 0"
       }}>

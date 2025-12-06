@@ -9,7 +9,7 @@ const SelectPart = (props: {
   placeholder?: string;
   supllierId?: string;
 }) => {
-  const { name, multiple, placeholder, supllierId = '' } = props
+  const { name, multiple, placeholder, supllierId } = props
   const [data, setData] = useState<MPart.IRecord[]>([])
 
   const dataOptions = data?.map(item => ({
@@ -18,7 +18,7 @@ const SelectPart = (props: {
   }))
 
   useEffect(() => {
-    getPart().then(res => setData(res.data ? res.data.filter(item => item.supplier.id === supllierId) : []))
+    getPart().then(res => setData(res.data ? supllierId ? res.data.filter(item => item.supplier.id === supllierId) : res.data : []))
   }, [])
 
 
