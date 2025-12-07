@@ -10,6 +10,7 @@ import ConfirmDelete from "../../../components/confirmDelete"
 import { notify } from "../../../components/Notification"
 import DetailPart from "./detailPart"
 import Tag from "../../../components/Tag"
+import { formatCurrency } from "../../../utils/formatCurrency"
 
 const Parts = () => {
   const [dataPart, setDataPart] = useState<MPart.IRecord[]>([])
@@ -33,12 +34,21 @@ const Parts = () => {
       dataIndex: "name",
       width: 150,
     },
+    // {
+    //   title: <div style={{ textAlign: "center" }}>{`Giá nhập (VND)`}</div>,
+    //   dataIndex: "price",
+    //   width: 120,
+    //   render: (value) => (
+    //     // <div style={{ textAlign: "center" }}>{formatCurrency(value)}</div>
+    //     <div style={{ textAlign: "center" }}>{value}</div>
+    //   )
+    // },
     {
       title: <div style={{ textAlign: "center" }}>{`Giá bán (VND)`}</div>,
       dataIndex: "price",
       width: 120,
       render: (value) => (
-        <div style={{ textAlign: "center" }}>{value.toLocaleString("vi-VN")} đ</div>
+        <div style={{ textAlign: "center" }}>{formatCurrency(value)}</div>
       )
     },
     {

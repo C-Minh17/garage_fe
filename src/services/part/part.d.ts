@@ -5,6 +5,7 @@ declare module MPart {
     name: string,
     price: number,
     stock: number,
+    salePrice: number,
     description: string,
     supplierId: string,
     supplier: MSupplier.IRecord,
