@@ -14,6 +14,11 @@ const ipProfile = ipRoot + "/profile"
 const ipImportItem = ipRoot + "/import-invoice-items"
 const ipRepairOrder = ipRoot + "/repair-orders"
 const ipPayment = ipRoot + "/payments"
+const ipPartBooking = ipRoot + "/part-bookings"
+const ipNotification = ipRoot + "/notifications"
+
+
+
 
 
 export {
@@ -30,4 +35,6 @@ export {
   ipRootServer,
   ipRepairOrder,
   ipPayment,
+  ipPartBooking,
+  ipNotification
 }
