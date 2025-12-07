@@ -5,6 +5,8 @@ import { AiOutlineEye } from "react-icons/ai"
 import { getPayment } from "../../../services/api/paymentApi"
 import BaseModal from "../../../components/baseModal"
 import FormImport from "./formImport"
+import { getImportItem } from "../../../services/api/importItemApi"
+import ImportDetail from "./detailImport"
 
 const ImportItem = () => {
   const [dataImportItem, setDataImportItem] = useState<MImportItem.IRecord[]>([])
@@ -12,6 +14,7 @@ const ImportItem = () => {
   const [isModalForm, setIsModalForm] = useState<boolean>(false)
   const [importItemDetail, setImportItemDetail] = useState<MImportItem.IRecord>()
   const [loading, setLoading] = useState<boolean>(true)
+  const [isReload, setIsReload] = useState<boolean>(true)
 
 
   const columns: Column<MImportItem.IRecord>[] = [
@@ -25,12 +28,12 @@ const ImportItem = () => {
       dataIndex: "supplier",
       width: 250,
       render: (_, record) => (
-        <div>{`${record.supplier.name} (${record.supplier.supplierCode})`}</div>
+        <div>{`${record.supplier.supplierName} (${record.supplier.supplierCode})`}</div>
       )
     },
     {
       title: "Số loại phụ tùng",
-      dataIndex: "quantityItem",
+      dataIndex: "quantity",
       width: 200,
     },
     {
@@ -40,7 +43,7 @@ const ImportItem = () => {
     },
     {
       title: "Ngày nhập",
-      dataIndex: "importDate",
+      dataIndex: "date",
       render: (value, record) => (
         <div>{value}</div>
       )
@@ -50,7 +53,7 @@ const ImportItem = () => {
       width: 100,
       render: (value, record) => (
         <div style={{ display: "flex", justifyContent: "center", gap: 5 }}>
-          <Button onClick={() => { }} type="viewDetail" style={{ padding: 0, width: 23, height: 23 }}>
+          <Button onClick={() => { setImportItemDetail(record); setIsModalDetail(true) }} type="viewDetail" style={{ padding: 0, width: 23, height: 23 }}>
             <AiOutlineEye />
           </Button>
         </div>
@@ -58,12 +61,12 @@ const ImportItem = () => {
     },
   ]
 
-  // useEffect(() => {
-  //   setLoading(true)
-  //   getPayment()
-  //     .then(res => setDataPayment(res?.data ? res.data : []))
-  //     .finally(() => setLoading(false))
-  // }, [])
+  useEffect(() => {
+    setLoading(true)
+    getImportItem()
+      .then(res => setDataImportItem(res?.data ? res.data : []))
+      .finally(() => setLoading(false))
+  }, [])
 
   return (
     <>
@@ -71,24 +74,32 @@ const ImportItem = () => {
         isOpen={isModalForm}
         closeModal={() => setIsModalForm(false)}
       >
-        <FormImport />
+        <FormImport setIsModal={setIsModalForm} isReload={isReload} setIsReload={setIsReload} />
       </BaseModal>
+
+      <BaseModal
+        isOpen={isModalDetail}
+        closeModal={() => setIsModalDetail(false)}
+      >
+        <ImportDetail data={importItemDetail} />
+      </BaseModal>
+
       <div style={{
         margin: "40px 0"
       }}>
-        <h4 style={{ margin: "10px 20px" }}>Lịch sửa thanh toán</h4>
+        <h4 style={{ margin: "10px 20px" }}>Lịch sửa nhập hàng</h4>
         <div
           style={{
             margin: "10px 5px",
             textAlign: "end"
           }}
-          onClick={() => setIsModalForm(true)}
         >
-          <Button type="gradientPrimary">+ Thêm hóa đơn nhập hàng</Button>
+          <Button onClick={() => setIsModalForm(true)} type="gradientPrimary">+ Thêm hóa đơn nhập hàng</Button>
         </div>
         <TableBase
           columns={columns}
           dataSource={dataImportItem}
+          loading={loading}
         />
       </div>
     </>
