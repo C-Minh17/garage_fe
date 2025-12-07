@@ -7,12 +7,25 @@ import { getCustomers } from "../../services/api/customerApi";
 import { notify } from "../../components/Notification";
 import Select from "../../components/Select";
 import SelectSupplier from "../phu-tung/components/selectSupplier";
+import Drawer from "../../components/draw.tsx";
+import Notification from "../notification";
 
 
 const DashBoard = () => {
   const [is, setIs] = useState(false)
   const [data, setData] = useState<any>()
   const [loading, setLoading] = useState<boolean>(true)
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [open2, setOpen2] = useState<boolean>(false);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
 
 
   useEffect(() => {
@@ -37,53 +50,18 @@ const DashBoard = () => {
 
   return (
     <div>
-      <BaseModal isOpen={is} closeModal={() => { setIs(false) }}>
-        <div>click làm chó</div>
-        <div>click làm chó</div>
-        <b>bạn là con chó
-        </b>
-      </BaseModal>
-      <Button type={"gradientPrimary"} onClick={() => { notify({ type: 'info', title: 'Đúng vậy', description: 'Bảo bị bysexual thật' }) }}>+ click đi</Button>
-      <hr />
-      <div>
-        <h3>Single Select:</h3>
-        <Form onFinish={onSub} initialValues={{ mm: ["apple", "banana"] }}>
-          <Select name='mm' options={options} multiple />
-          <SelectSupplier name="ncc" />
-          <Form.Input name="kkk"></Form.Input>
-          <Button htmlType="submit">++</Button>
-        </Form>
-      </div>
-
-      <div>
-        <h3>Single Select:</h3>
-        <select multiple>
-          {options.map((item, index) => (
-            <option key={index} value={item.value}>{item.label}</option>
-          ))}
-        </select>
-      </div>
-      <hr></hr>
-      <hr></hr>
-      <Form
-        initialValues={{ username: "minh", password: "" }}
-        onFinish={(values) => console.log("✅ Submitted:", values)}
+      <Drawer
+        visible={open2}
+        onClose={() => setOpen2(false)}
+        width={400}
       >
+        <div style={{ padding: 20 }}>
+          <Notification />
+        </div>
+      </Drawer>
 
-        <Form.Input name="username" placeholder="Username" />
-        <Form.Input name="password" type="password" placeholder="Password" disabled />
+      <div><Button onClick={() => setOpen2(true)}>Thông báo</Button></div>
 
-        <Button
-          htmlType="submit"
-        >
-          Submit
-        </Button>
-      </Form>
-      <p>Bảo là cậu bé Down made in china</p>
-      <p>Bảo là cậu bé Down made in china</p>
-      <p>Bảo là cậu bé Down made in china</p>
-      <p>Bảo là cậu bé Down made in china</p>
-      <p>Bảo là cậu bé Down made in china</p>
     </div>
   )
 }
