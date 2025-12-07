@@ -1,0 +1,41 @@
+{
+  "status": "success",
+  "data": {
+    "serviceStatistics": [
+      {
+        "id": "1",
+        "rank": 1,
+        "code": "S004",
+        "name": "Thay lốp xe",
+        "quantity": 312,
+        "totalRevenue": 468000000
+      },
+      {
+        "id": "2",
+        "rank": 2,
+        "code": "S003",
+        "name": "Sửa hệ thống phanh",
+        "quantity": 156,
+        "totalRevenue": 312000000
+      }
+    ],
+    "partStatistics": [
+      {
+        "id": "1",
+        "rank": 1,
+        "code": "S004",
+        "name": "Thay lốp xe",
+        "quantity": 312,
+        "totalRevenue": 468000000
+      },
+      {
+        "id": "2",
+        "rank": 2,
+        "code": "S003",
+        "name": "Sửa hệ thống phanh",
+        "quantity": 156,
+        "totalRevenue": 312000000
+      }
+    ]
+  }
+}

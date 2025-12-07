@@ -11,7 +11,19 @@ const postAuthLogin = (data: MLogin.IRecord) => {
   return res
 }
 
+const postAuthRegisterAdmin = (data: MRegister.IRecord) => {
+  const res = axios.post(ipAuth + "/register-admin", data)
+  return res
+}
+
+const postAuthLoginAdmin = (data: MLogin.IRecord) => {
+  const res = axios.post(ipAuth + "/login-admin", data)
+  return res
+}
+
 export {
   postAuthRegister,
-  postAuthLogin
+  postAuthLogin,
+  postAuthLoginAdmin,
+  postAuthRegisterAdmin,
 }

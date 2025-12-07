@@ -34,15 +34,7 @@ const Parts = () => {
       dataIndex: "name",
       width: 150,
     },
-    // {
-    //   title: <div style={{ textAlign: "center" }}>{`Giá nhập (VND)`}</div>,
-    //   dataIndex: "price",
-    //   width: 120,
-    //   render: (value) => (
-    //     // <div style={{ textAlign: "center" }}>{formatCurrency(value)}</div>
-    //     <div style={{ textAlign: "center" }}>{value}</div>
-    //   )
-    // },
+
     {
       title: <div style={{ textAlign: "center" }}>{`Giá bán (VND)`}</div>,
       dataIndex: "price",
