@@ -165,23 +165,24 @@ const Services = () => {
         </Button>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "end" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "end", marginTop: 10, marginBottom: 10 }}>          
         <Button onClick={() => setIsDesc(!isDesc)} type="dashed" style={{ marginRight: 10, display: 'flex', alignItems: 'center', gap: 5, height: 38 }}>
-            {isDesc ? <AiOutlineSortDescending size={20} /> : <AiOutlineSortAscending size={20} />}
-            {isDesc ? "Mới nhất" : "Cũ nhất"}
+          {isDesc ? <AiOutlineSortDescending size={20} /> : <AiOutlineSortAscending size={20} />}
+          {isDesc ? "Mới nhất" : "Cũ nhất"}
         </Button>
 
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <AiOutlineSearch style={{ position: 'absolute', left: 15, zIndex: 1 }} />
           <Input
             name="search"
-            style={{ width: 230, margin: "10px 10px", marginRight: 25, borderRadius: 7 }}
-            placeholder="Tìm theo mã, tên, ..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ width: 230, paddingLeft: 35, marginRight: 10, borderRadius: 7 }}
+            placeholder="Tìm theo mã, tên..."
           />
         </div>
       </div>
+
 
       <TableBase columns={Columns} dataSource={dataService} loading={loading} />
       

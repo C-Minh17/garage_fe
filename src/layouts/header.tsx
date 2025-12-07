@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import { deleteCookie, getCookie } from "../utils/cookie";
 import { notify } from "../components/Notification";
 import TagProfile from "../pages/settings/components/tagProfile";
+import AdminNotification from "../components/AdminPartNotification/AdminNotification";
 
 const HeaderManage = (
   {
@@ -58,11 +59,14 @@ const HeaderManage = (
         >
           <div
             onClick={() => setIsSider?.(!isSider)}
+            style={{ cursor: 'pointer' }}
           >
             {!isMobile ? <AiOutlineMenu /> : isSider ? <AiOutlineMenuFold size={23} /> : <AiOutlineMenuUnfold size={23} />}
           </div>
-          <div>
-            {/* <Button onClick={() => logout()}>Đăng xuất</Button> */}
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <AdminNotification />
+            
             <TagProfile logout={logout} />
           </div>
         </div>

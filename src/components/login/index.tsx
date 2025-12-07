@@ -3,7 +3,7 @@ import Form from "../FormBase"
 import Button from "../Button"
 import { ColorStyle } from "../../styles/colors"
 import { useNavigate } from "react-router"
-import { postAuthLogin } from "../../services/api/authApi"
+import { postAuthLogin, postAuthLoginAdmin } from "../../services/api/authApi"
 import { notify } from "../Notification"
 import { setCookie } from "../../utils/cookie"
 
@@ -11,7 +11,8 @@ const Login = () => {
   const navigate = useNavigate()
 
   const onFinish = async (value: MLogin.IRecord) => {
-    const res: any = await postAuthLogin(value)
+    // const res: any = await postAuthLogin(value)
+    const res: any = await postAuthLoginAdmin(value)
     if (res?.success) {
       notify({ title: "Success", type: "success", description: "Đăng nhập thành công" })
       setCookie("accessToken", res.accessToken, 15)

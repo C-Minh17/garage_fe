@@ -3,14 +3,15 @@ import Form from "../FormBase"
 import Button from "../Button"
 import { ColorStyle } from "../../styles/colors"
 import { useNavigate } from "react-router"
-import { postAuthRegister } from "../../services/api/authApi"
+import { postAuthRegister, postAuthRegisterAdmin } from "../../services/api/authApi"
 import { notify } from "../Notification"
 
 const Register = () => {
   const navigate = useNavigate()
 
   const onFinish = async (value: MRegister.IRecord) => {
-    const res: any = await postAuthRegister(value)
+    // const res: any = await postAuthRegister(value)
+    const res: any = await postAuthRegisterAdmin(value)
     if (res?.success) {
       notify({ title: "Success", type: "success", description: "Đã tạo tài khoản mới thành công" })
       navigate("/login")
