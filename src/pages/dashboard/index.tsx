@@ -50,15 +50,6 @@ const DashBoard = () => {
 
   return (
     <div>
-      <Drawer
-        visible={open2}
-        onClose={() => setOpen2(false)}
-        width={400}
-      >
-        <div style={{ padding: 20 }}>
-          <Notification />
-        </div>
-      </Drawer>
 
       <div><Button onClick={() => setOpen2(true)}>Thông báo</Button></div>
 
