@@ -3,7 +3,7 @@ import "./assets/setting.scss";
 import Button from "../../components/Button";
 import BaseModal from "../../components/baseModal";
 import FormProfile from "./components/formProfile";
-import avatarDefaulf from "../../assets/user-default.jpg"
+import avatarDefaulf from "../../assets/avatar-hai-1-1.jpg"
 import useModelProfile from "../../services/api/profileApi";
 import { ipProfile, ipRoot, ipRootServer } from "../../utils/ip";
 
