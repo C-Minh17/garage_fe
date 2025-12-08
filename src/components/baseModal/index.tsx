@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import ReactDOM from "react-dom";
 import "./modal.scss";
 
 interface ICustomModalProps {
@@ -21,7 +22,7 @@ const BaseModal = ({ isOpen, closeModal, children }: ICustomModalProps) => {
 
   if (!isVisible) return null;
 
-  return (
+  return ReactDOM.createPortal(
     <div
       className={`modal-overlay ${isOpen ? "open" : "close"}`}
       onClick={closeModal}
@@ -35,7 +36,8 @@ const BaseModal = ({ isOpen, closeModal, children }: ICustomModalProps) => {
         </div>
         <div className="modal-content">{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

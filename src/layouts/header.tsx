@@ -8,6 +8,7 @@ import { deleteCookie, getCookie } from "../utils/cookie";
 import { notify } from "../components/Notification";
 import TagProfile from "../pages/settings/components/tagProfile";
 import AdminNotification from "../components/AdminPartNotification/AdminNotification";
+import Notification from "../pages/notification";
 
 const HeaderManage = (
   {
@@ -64,10 +65,10 @@ const HeaderManage = (
             {!isMobile ? <AiOutlineMenu /> : isSider ? <AiOutlineMenuFold size={23} /> : <AiOutlineMenuUnfold size={23} />}
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <AdminNotification />
-            
-            <TagProfile logout={logout} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0px' }}>
+            <div><AdminNotification /></div>
+            <div><Notification /></div>
+            <div><TagProfile logout={logout} /></div>
           </div>
         </div>
       </div>
