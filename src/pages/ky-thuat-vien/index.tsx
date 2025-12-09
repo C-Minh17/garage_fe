@@ -17,6 +17,7 @@ import {
   sortTechnicians
 } from "../../services/api/techniciansApi"
 import { formatCurrency } from "../../utils/formatCurrency"
+import { useBreakpoint } from "../../hooks/useBreakpoint"
 
 const Technicians = () => {
 
@@ -33,6 +34,8 @@ const Technicians = () => {
   const [debouncedSearch, setDebouncedSearch] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(true)
   const [isDesc, setIsDesc] = useState<boolean>(true)
+  const screen = useBreakpoint()
+  const isMobile = screen.sm
 
   const columns: Column<MTechnician.IRecord>[] = [
     { title: "Mã KTV", dataIndex: "techCode", width: 100 },
@@ -179,11 +182,20 @@ const Technicians = () => {
       </BaseModal>
 
       <div style={{ margin: "50px 0" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: 'center' }}>
-          <h3 style={{ marginLeft: 10 }}>Danh sách kỹ thuật viên</h3>
-          <Button onClick={() => setModal(undefined, "post")} type="gradientPrimary" style={{ padding: "9px 20px", marginRight: 10 }}>
-            + Thêm kỹ thuật viên
-          </Button>
+        <div style={{ display: !isMobile ? "block" : "flex", justifyContent: "space-between", alignItems: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <h1 style={{ fontSize: '28px', fontWeight: '700', color: '#111827', margin: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
+              Danh sách kỹ thuật viên
+            </h1>
+            <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
+              Quản lý hồ sơ, cấp bậc và phân công công việc
+            </p>
+          </div>
+          <div style={{ textAlign: "end" }}>
+            <Button onClick={() => setModal(undefined, "post")} type="gradientPrimary" style={{ padding: "9px 20px", marginRight: 10 }}>
+              + Thêm kỹ thuật viên
+            </Button>
+          </div>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "end", marginTop: 10, marginBottom: 10 }}>

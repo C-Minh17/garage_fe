@@ -8,6 +8,7 @@ import { getCar, putCar, searchCar } from "../../../services/api/carApi"
 import BaseModal from "../../../components/baseModal"
 import { ColorStyle } from "../../../styles/colors"
 import { IoIosCheckmarkCircleOutline } from "react-icons/io"
+import { useBreakpoint } from "../../../hooks/useBreakpoint"
 
 const RepairCar = () => {
   const [carList, setCarList] = useState<MCar.IResponse[]>([])
@@ -18,6 +19,8 @@ const RepairCar = () => {
   const [selectedCar, setSelectedCar] = useState<MCar.IResponse | null>(null)
   const [isDesc, setIsDesc] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(true)
+  const screen = useBreakpoint()
+  const isMobile = screen.sm
 
   const columns: Column<MCar.IResponse>[] = [
     {
@@ -162,7 +165,7 @@ const RepairCar = () => {
       </BaseModal>
 
       <div style={{
-        display: "flex",
+        display: !isMobile ? "block" : "flex",
         justifyContent: "space-between",
         alignItems: 'center'
       }}>

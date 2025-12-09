@@ -30,7 +30,7 @@ const Notification = () => {
       getNotificationsConfirmed().then(res => setDataNotifyConfirm(res.data || []))
     }
     fetchAll()
-    const interval = setInterval(fetchAll, 20000)
+    const interval = setInterval(fetchAll, 15000)
     return () => clearInterval(interval)
 
   }, [isReload])

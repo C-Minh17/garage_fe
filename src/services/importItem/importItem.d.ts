@@ -44,6 +44,7 @@ declare module MImportItem {
     partCode: string,
     price: number,
     stock: number,
-    description: string
+    description: string,
+    unitPrice: number
   }
 }

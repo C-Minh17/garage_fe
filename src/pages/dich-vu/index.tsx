@@ -9,6 +9,7 @@ import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye, AiOutlineSearch, AiTwoton
 import { Input } from "../../components/FormBase"
 import { notify } from "../../components/Notification"
 import { formatCurrency } from "../../utils/formatCurrency"
+import { useBreakpoint } from "../../hooks/useBreakpoint"
 
 const convertBrokenObjectToArray = (res: any): MService.IRecord[] => {
   if (!res) return []
@@ -45,16 +46,19 @@ const Services = () => {
   const [searchQuery, setSearchQuery] = useState("")
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("")
   const [isDesc, setIsDesc] = useState<boolean>(true)
+  const screen = useBreakpoint()
+  const isMobile = screen.sm
 
   const Columns: Column<MService.IRecord>[] = [
     { title: "Mã dịch vụ", dataIndex: "serviceCode" },
     { title: "Tên dịch vụ", dataIndex: "name" },
     { title: "Giá (VNĐ)", dataIndex: "price", render: (value) => <div>{Number(value)?.toLocaleString()}</div> },
-    { title: "Mô tả", dataIndex: "description", width: 180, render: (text: string) => {
+    {
+      title: "Mô tả", dataIndex: "description", width: 180, render: (text: string) => {
         const max = 27;
         return text?.length > max ? text.slice(0, max) + "..." : text;
       }
-     },
+    },
     {
       title: <div style={{ textAlign: "center" }}>Thao tác</div>,
       width: 100,
@@ -160,14 +164,16 @@ const Services = () => {
         </div>
       </BaseModal>
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "20px 10px" }}>
+      <div style={{ display: !isMobile ? "block" : "flex", justifyContent: "space-between", alignItems: "center", margin: "20px 10px" }}>
         <div>
           <h1 style={{ margin: 0 }}>Danh sách dịch vụ</h1>
           <div>Danh sách và thông tin dịch vụ</div>
         </div>
-        <Button onClick={() => openModal(undefined, "post")} style={{ padding: "10px 20px" }} type="gradientPrimary">
-          + Thêm dịch vụ
-        </Button>
+        <div style={{ textAlign: "end" }}>
+          <Button onClick={() => openModal(undefined, "post")} style={{ padding: "10px 20px" }} type="gradientPrimary">
+            + Thêm dịch vụ
+          </Button>
+        </div>
       </div>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "end", marginTop: 10, marginBottom: 10 }}>

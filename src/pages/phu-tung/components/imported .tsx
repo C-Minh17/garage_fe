@@ -8,6 +8,7 @@ import FormImport from "./formImport"
 import { getImportItem } from "../../../services/api/importItemApi"
 import ImportDetail from "./detailImport"
 import { formatCurrency } from "../../../utils/formatCurrency"
+import Tag from "../../../components/Tag"
 
 const ImportItem = () => {
   const [dataImportItem, setDataImportItem] = useState<MImportItem.IRecord[]>([])
@@ -17,11 +18,10 @@ const ImportItem = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [isReload, setIsReload] = useState<boolean>(true)
 
-
   const columns: Column<MImportItem.IRecord>[] = [
     {
       title: "Mã nhập hàng",
-      dataIndex: "id",
+      dataIndex: "importInvoiceItemCode",
       width: 170,
     },
     {
@@ -36,6 +36,9 @@ const ImportItem = () => {
       title: "Số loại phụ tùng",
       dataIndex: "quantity",
       width: 200,
+      render: (_, record) => (
+        <Tag>{record.supplier.parts.length}</Tag>
+      )
     },
     {
       title: "Tổng tiền",
@@ -70,7 +73,7 @@ const ImportItem = () => {
     getImportItem()
       .then(res => setDataImportItem(res?.data ? res.data : []))
       .finally(() => setLoading(false))
-  }, [])
+  }, [isReload])
 
   return (
     <>

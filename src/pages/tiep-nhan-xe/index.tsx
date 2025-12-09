@@ -9,6 +9,7 @@ import BaseModal from "../../components/baseModal"
 import FormCar from "../xe/components/formlistcar"
 import FormCustomer from "../khach-hang/components/form"
 import FormRepairOrder from "./components/formRepairOrder"
+import { useBreakpoint } from "../../hooks/useBreakpoint"
 
 const VehicleReception = () => {
   const [dataCustomer, setDataCustomer] = useState<MCustomer.IRecord[]>([])
@@ -20,6 +21,8 @@ const VehicleReception = () => {
   const [isModal, setIsModal] = useState<boolean>(false)
   const [isTypeModal, setIsTypeModal] = useState<"car" | "customer">()
   const [step, setStep] = useState<1 | 2>(1)
+  const screen = useBreakpoint()
+  const isMobile = screen.sm
 
   useEffect(() => {
     if (querySearchCustomer) {
@@ -54,7 +57,14 @@ const VehicleReception = () => {
           </div>
         }
       </BaseModal>
-      <h1>Tiếp nhận xe</h1>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        <h1 style={{ fontSize: '30px', fontWeight: '700', color: '#1a1a1a', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+          Tiếp nhận xe
+        </h1>
+        <p style={{ fontSize: '14px', color: '#666', margin: 0 }}>
+          Quản lý danh sách xe và tạo phiếu dịch vụ mới
+        </p>
+      </div>
       <div style={{
         width: "100%",
         overflow: "hidden",
@@ -89,7 +99,7 @@ const VehicleReception = () => {
               <Col xs={12} sm={12} md={4} style={{ display: "flex", justifyContent: "center" }}>
                 <div
                   style={{
-                    width: 300,
+                    width: !isMobile ? 365 : 300,
                     border: "1px solid #e5e8ef",
                     borderRadius: 10,
                     padding: 12,
@@ -195,7 +205,7 @@ const VehicleReception = () => {
                         <Col xs={12} sm={6} xl={4} key={item?.id}>
                           <div
                             style={{
-                              background: targetCar?.id === item.id ? "#d0e2ff" : "#f8faff",
+                              background: item.active === true ? "#ddd" : targetCar?.id === item.id ? "#d0e2ff" : "#f8faff",
                               borderRadius: 12,
                               padding: "14px 16px",
                               margin: 8,
@@ -207,22 +217,24 @@ const VehicleReception = () => {
                               transition: "all 0.25s ease",
                             }}
                             onMouseEnter={(e) => {
-                              if (item.id !== targetCar?.id) {
+                              if (item.id !== targetCar?.id && item.active === false) {
                                 e.currentTarget.style.boxShadow = "0 6px 18px rgba(0, 64, 128, 0.12)";
                                 e.currentTarget.style.transform = "translateY(-3px)";
                                 e.currentTarget.style.background = "#eef5ff";
                               }
                             }}
                             onMouseLeave={(e) => {
-                              if (item.id !== targetCar?.id) {
+                              if (item.id !== targetCar?.id && item.active === false) {
                                 e.currentTarget.style.boxShadow = "0 4px 10px rgba(0, 64, 128, 0.04)";
                                 e.currentTarget.style.transform = "translateY(0)";
                                 e.currentTarget.style.background = "#f8faff";
                               }
                             }}
-                            onClick={() =>
-                              targetCar?.id === item.id ? setTargetCar(undefined) : setTargetCar(item)
-                            }
+                            onClick={() => {
+                              if (item.active === false) {
+                                targetCar?.id === item.id ? setTargetCar(undefined) : setTargetCar(item)
+                              }
+                            }}
                           >
                             <div style={{ fontWeight: 700, fontSize: 16, color: "#1d3b78" }}>
                               {`${item.model} (${item.manufacturer})`}
@@ -263,7 +275,7 @@ const VehicleReception = () => {
               </Col>
             </Row>
           </div>
-          {/* /////// */}
+
           <div style={{
             margin: "50px 0",
             width: '100%',

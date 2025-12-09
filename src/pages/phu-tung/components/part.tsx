@@ -11,6 +11,7 @@ import { notify } from "../../../components/Notification"
 import DetailPart from "./detailPart"
 import Tag from "../../../components/Tag"
 import { formatCurrency } from "../../../utils/formatCurrency"
+import { useBreakpoint } from "../../../hooks/useBreakpoint"
 
 const Parts = () => {
   const [dataPart, setDataPart] = useState<MPart.IRecord[]>([])
@@ -23,6 +24,8 @@ const Parts = () => {
   const [isModalDel, setIsModalDel] = useState<boolean>(false)
   const [isModalDetail, setIsModalDetail] = useState<boolean>(false)
   const [querySearch, setQuerySearch] = useState<any>()
+  const screen = useBreakpoint()
+  const isMobile = screen.sm
 
   const columns: Column<MPart.IRecord>[] = [
     {
@@ -155,12 +158,12 @@ const Parts = () => {
 
       <div style={{ margin: "50px 0" }}>
         <div style={{
-          display: "flex",
+          display: !isMobile ? "block" : "flex",
           justifyContent: "space-between",
           alignItems: 'center'
         }}>
           <h3 style={{ marginLeft: 10 }}>Danh sách phụ tùng của garage</h3>
-          <div>
+          <div style={{ textAlign: "end" }}>
             <Button onClick={() => setModal(undefined, 'post')} style={{ padding: "9px 20px", marginRight: 10 }} type="gradientPrimary">+ Thêm phụ tùng</Button>
           </div>
         </div>
