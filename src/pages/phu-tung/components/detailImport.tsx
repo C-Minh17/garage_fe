@@ -35,12 +35,12 @@ const ImportDetail = ({ data }: ImportDetailProps) => {
     },
     {
       title: "Đơn giá nhập",
-      dataIndex: "price"
+      dataIndex: "unitPrice"
     },
     {
       title: "Thành tiền",
       render: (_, record) => (
-        <div>{formatCurrency(record.price * record.stock)}</div>
+        <div>{formatCurrency(record.unitPrice * record.stock)}</div>
       )
     },
   ]

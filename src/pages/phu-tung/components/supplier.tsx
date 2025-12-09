@@ -11,6 +11,7 @@ import { ColorStyle } from "../../../styles/colors"
 import FormSupplier from "./formSupplier"
 import ConfirmDelete from "../../../components/confirmDelete"
 import DetailSupplier from "./detailSupplier"
+import { useBreakpoint } from "../../../hooks/useBreakpoint"
 
 const Suppliers = () => {
   const [dataSupplier, setDataSupplier] = useState<MSupplier.IRecord[]>([])
@@ -23,6 +24,8 @@ const Suppliers = () => {
   const [dataSupplierId, setDataSupplierId] = useState<MSupplier.IRecord>()
   const [isModalDetail, setIsModalDetail] = useState<boolean>(false)
   const [querySearch, setQuerySearch] = useState<any>()
+  const screen = useBreakpoint()
+  const isMobile = screen.sm
 
 
   const columns: Column<MSupplier.IRecord>[] = [
@@ -134,12 +137,12 @@ const Suppliers = () => {
       </BaseModal>
       <div style={{ margin: "50px 0" }}>
         <div style={{
-          display: "flex",
+          display: !isMobile ? "block" : "flex",
           justifyContent: "space-between",
           alignItems: 'center'
         }}>
           <h3 style={{ marginLeft: 10 }}>Danh sách nhà cung cấp</h3>
-          <div>
+          <div style={{ textAlign: "end" }}>
             <Button onClick={() => setModal(undefined, 'post')} style={{ padding: "9px 20px", marginRight: 10 }} type="gradientPrimary">+ Thêm nhà cung cấp</Button>
           </div>
         </div>

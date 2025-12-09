@@ -16,10 +16,14 @@ const Payment = () => {
 
   return (
     <>
-      <h1 style={{
-        fontSize: 35,
-        marginTop: 10
-      }}>Quản lý hóa đơn</h1>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        <h1 style={{ fontSize: '30px', fontWeight: '700', color: '#111827', margin: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
+          Quản lý hóa đơn
+        </h1>
+        <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
+          Theo dõi trạng thái thanh toán và lịch sử giao dịch chi tiết
+        </p>
+      </div>
       <p>-----------------</p>
       <div>
         <div style={{
