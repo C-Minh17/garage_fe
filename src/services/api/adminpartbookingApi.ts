@@ -26,6 +26,16 @@ const deletePartBooking = async (id: string) => {
   return res as ApiResponse<null>
 }
 
+const deleteAllPartBookings = async () => {
+  const res = await axios.delete(`${ipPartBooking}`)
+  return res as ApiResponse<null>
+}
+
+const cancelPartBooking = async (id: string) => {
+  const res = await axios.put(`${ipPartBooking}/${id}/cancel`)
+  return res as ApiResponse<MPartBooking.IRecord>
+}
+
 const sortPartBooking = async (asc: boolean = false) => {
   const res = await axios.get(`${ipPartBooking}/sort`, { params: { asc } })
   return res as ApiResponse<MPartBooking.IRecord[]>
@@ -37,5 +47,8 @@ export {
   postPartBooking,
   confirmPartBooking,
   deletePartBooking,
-  sortPartBooking
+  sortPartBooking,
+  deleteAllPartBookings,
+  cancelPartBooking
+
 }
