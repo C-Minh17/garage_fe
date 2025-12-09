@@ -35,6 +35,7 @@ const useModelProfile = () => {
         "Content-Type": "multipart/form-data",
       }
     })
+    setIsReload(!isReload)
     return res
   }
 
