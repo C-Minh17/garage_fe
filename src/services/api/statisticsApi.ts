@@ -16,8 +16,14 @@ const getStatisticDashboard = async () => {
   return res as ApiResponse<any>
 }
 
+const getStatisticDaily = async (date: string) => {
+  const res = await axios.get(`${ipStatistic}/daily?date=${date}`)
+  return res as any
+}
+
 export {
   getMonthlyRevenue,
   getStatisticDashboard,
   getStatisticServicePart,
+  getStatisticDaily
 }

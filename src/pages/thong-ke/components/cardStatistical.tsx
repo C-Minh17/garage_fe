@@ -11,41 +11,17 @@ interface StatItem {
   isGrowth: boolean;
 }
 
-const CardStatistical = ({ dataaa }: { dataaa: any }) => {
-  const statsData: StatItem[] = [
-    {
-      id: 1,
-      title: 'Tổng doanh thu năm',
-      value: '4.61B đ',
-      subText: '+18.2% so với năm trước',
-      icon: <BsGraphUpArrow size={20} />,
-      isGrowth: true,
-    },
-    {
-      id: 2,
-      title: 'Tổng đơn hàng',
-      value: '773',
-      subText: '+156 đơn so với năm trước',
-      icon: <BsCalendarEvent size={20} />,
-      isGrowth: true,
-    },
-    {
-      id: 3,
-      title: 'Dịch vụ đã thực hiện',
-      value: '2,054',
-      subText: 'Trung bình 171/tháng',
-      icon: <BsWrench size={20} />,
-      isGrowth: false,
-    },
-    {
-      id: 4,
-      title: 'Phụ tùng đã bán',
-      value: '1,620',
-      subText: 'Trung bình 135/tháng',
-      icon: <BsBoxSeam size={20} />,
-      isGrowth: false,
-    },
+const CardStatistical = ({ dataaa }: { dataaa: StatItem[] }) => {
+  const icons = [
+    <BsGraphUpArrow size={20} />,
+    <BsCalendarEvent size={20} />,
+    <BsWrench size={20} />,
+    <BsBoxSeam size={20} />,
   ];
+  const mergedData = dataaa?.map((item, index) => ({
+    ...item,
+    icon: icons[index] || null
+  }));
 
   return (
     <div style={{
@@ -53,7 +29,7 @@ const CardStatistical = ({ dataaa }: { dataaa: any }) => {
       marginTop: 20
     }}>
       <Row className="g-4">
-        {statsData.map((item) => (
+        {mergedData?.map((item) => (
           <Col key={item.id} xs={12} md={6} lg={3}>
 
             <div style={{
@@ -109,7 +85,7 @@ const CardStatistical = ({ dataaa }: { dataaa: any }) => {
                   fontSize: '14px',
                   fontWeight: '500',
                   margin: 0,
-                  color: item.isGrowth ? '#16A34A' : '#6B7280'
+                  color: '#16A34A'
                 }}>
                   {item.subText}
                 </p>
