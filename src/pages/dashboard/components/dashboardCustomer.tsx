@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react"
-import { getStatisticServicePart } from "../../../services/api/statisticsApi"
+import { getStatisticServicePart, getTopCustomer } from "../../../services/api/statisticsApi"
 import TableBase, { Column } from "../../../components/BaseTable"
 import Tag from "../../../components/Tag"
 import { formatCurrency } from "../../../utils/formatCurrency"
 
-const PartDashboard = () => {
-  const [data, setData] = useState<any>()
+const TopCustomerDashboard = () => {
+  const [data, setData] = useState<any[]>([])
+
+  const mergedData = data.map((item, index) => ({
+    ...item,
+    rank: index + 1
+  }));
 
   const column: Column<any>[] = [
     {
@@ -24,16 +29,16 @@ const PartDashboard = () => {
       ),
     },
     {
-      title: "Tên",
-      dataIndex: "name"
+      title: "Mã khách hàng",
+      dataIndex: "userCode"
     },
     {
-      title: "Số lượng",
-      dataIndex: "quantity"
+      title: "Tên khách hàng",
+      dataIndex: "userName"
     },
     {
-      title: "Tổng tiền",
-      dataIndex: "totalRevenue",
+      title: "Tổng chi tiêu",
+      dataIndex: "totalSpent",
       render: (value) => (
         <div>{formatCurrency(value)}</div>
       )
@@ -41,7 +46,7 @@ const PartDashboard = () => {
   ]
 
   useEffect(() => {
-    getStatisticServicePart().then(res => setData(res.data))
+    getTopCustomer().then(res => setData(res.data.user))
   }, [])
 
   return (
@@ -56,14 +61,14 @@ const PartDashboard = () => {
           borderRadius: 6
         }}
       >
-        Top linh kiện / phụ tùng
+        Top khách hàng
       </h3>
       <TableBase
         columns={column}
-        dataSource={data?.partStatistics}
+        dataSource={mergedData}
       />
     </div>
   )
 }
 
-export default PartDashboard
+export default TopCustomerDashboard

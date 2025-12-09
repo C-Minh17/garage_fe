@@ -21,9 +21,15 @@ const getStatisticDaily = async (date: string) => {
   return res as any
 }
 
+const getTopCustomer = async () => {
+  const res = await axios.get(`${ipStatistic}/top-users`)
+  return res as ApiResponse<any>
+}
+
 export {
   getMonthlyRevenue,
   getStatisticDashboard,
   getStatisticServicePart,
-  getStatisticDaily
+  getStatisticDaily,
+  getTopCustomer
 }

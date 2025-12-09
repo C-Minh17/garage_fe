@@ -12,6 +12,7 @@ import Notification from "../notification";
 import CardDashboard from "./components/cards";
 import PartDashboard from "./components/dashboardPart";
 import { Col, Row } from "react-bootstrap";
+import TopCustomerDashboard from "./components/dashboardCustomer";
 
 
 const DashBoard = () => {
@@ -43,7 +44,7 @@ const DashBoard = () => {
         <div style={{ margin: "40px 0" }}>
           <Row>
             <Col xs={12} lg={6}>
-              <PartDashboard />
+              <TopCustomerDashboard />
             </Col>
             <Col xs={12} lg={6}>
               <PartDashboard />

@@ -14,7 +14,7 @@ const SelectPart = (props: {
 
   const dataOptions = data?.map(item => ({
     label: `${item.name}(${item.partCode})`,
-    value: `${item.id}&&${item.name}&&${item.price}`
+    value: `${item.id}&&${item.name}&&${item.price}&&${item.stock}`
   }))
 
   useEffect(() => {
