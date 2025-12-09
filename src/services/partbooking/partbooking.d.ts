@@ -14,6 +14,7 @@ declare namespace MPartBooking {
     phone: string;
     address: string;
     isActive: boolean;
+    status: string;
     createdAt: string;
     updatedAt: string;
   }
