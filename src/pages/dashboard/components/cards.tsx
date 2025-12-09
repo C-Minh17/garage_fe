@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { BsGraphUpArrow, BsCalendarEvent, BsWrench, BsBoxSeam } from "react-icons/bs";
+import { getStatisticDaily } from '../../../services/api/statisticsApi';
+import { formatCurrency } from '../../../utils/formatCurrency';
+import { getCar } from '../../../services/api/carApi';
+import { getTechnicians } from '../../../services/api/techniciansApi';
 
 interface StatItem {
   id: number;
@@ -11,36 +15,49 @@ interface StatItem {
 }
 
 const CardDashboard = () => {
+  const today = new Date()
+  const formattedDate = today.toLocaleDateString('en-CA');
+  const [data, setData] = useState<any>()
+  const [dataCar, setDataCar] = useState<MCar.IResponse[]>()
+  const [dataTechnician, setDataTechnician] = useState<MTechnician.IRecord[]>([])
   const statsData: StatItem[] = [
     {
       id: 2,
       title: 'Doanh thu hôm nay',
-      value: '10M',
-      subText: 'Đơn hàng đã hoàn tất',
+      value: formatCurrency(data?.totalRevenueInDay) || 0,
+      subText: 'Tổng doanh thu ngày hôm nay',
       icon: <BsCalendarEvent size={20} />,
     },
     {
       id: 1,
       title: 'Xe đang sửa',
-      value: '12',
+      value: dataCar?.length,
       subText: 'Cập nhật theo thời gian thực',
       icon: <BsGraphUpArrow size={20} />,
     },
     {
       id: 3,
       title: 'Dịch vụ đã thực hiện',
-      value: '2,054',
-      subText: 'Bao gồm tất cả các dịch vụ',
+      value: data?.totalServicesInDay || 0,
+      subText: 'Bao gồm tất cả trong ngày',
       icon: <BsWrench size={20} />,
     },
     {
       id: 4,
       title: 'kĩ thuật viên trống',
-      value: '1,620',
-      subText: '3 người đang làm việc',
+      value: dataTechnician?.filter(item => item.active === false).length,
+      subText: `Có ${dataTechnician?.length - dataTechnician?.filter(item => item.active === false).length} người làm việc`,
       icon: <BsBoxSeam size={20} />,
     },
   ];
+
+  useEffect(() => {
+    getStatisticDaily(formattedDate).then(res => setData(res))
+    getCar().then(res => setDataCar(res.data?.filter(item => item.active === true)))
+    getTechnicians().then(res => setDataTechnician(res.data ? res.data : []))
+  }, [])
+
+  console.log(data)
 
   return (
     <div style={{
