@@ -5,18 +5,21 @@ import { ColorStyle } from "../../../styles/colors"
 import { AiOutlineLogout, AiOutlineUser } from "react-icons/ai"
 import useModelProfile from "../../../services/api/profileApi"
 import { ipRootServer } from "../../../utils/ip"
+import { useReloadStore } from "../../../stores/useReload"
 
 const TagProfile = ({ logout }: { logout?: () => void }) => {
   const [dataProfile, setDataProfile] = useState<MProfile.IRecord>()
   const [isOpen, setIsOpen] = useState(false)
   const { getProfile, isReload } = useModelProfile()
+  const reloadKey = useReloadStore((state) => state.reloadKey);
+
 
 
   const navigate = useNavigate()
 
   useEffect(() => {
     getProfile().then(res => setDataProfile(res as any))
-  }, [isReload])
+  }, [isReload, reloadKey])
 
   return (
     <div

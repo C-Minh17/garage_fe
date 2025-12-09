@@ -8,42 +8,37 @@ interface StatItem {
   value: string;
   subText: string;
   icon: React.ReactNode;
-  isGrowth: boolean;
 }
 
-const CardStatistical = ({ dataaa }: { dataaa: any }) => {
+const CardDashboard = () => {
   const statsData: StatItem[] = [
     {
-      id: 1,
-      title: 'Tổng doanh thu năm',
-      value: '4.61B đ',
-      subText: '+18.2% so với năm trước',
-      icon: <BsGraphUpArrow size={20} />,
-      isGrowth: true,
+      id: 2,
+      title: 'Doanh thu hôm nay',
+      value: '10M',
+      subText: 'Đơn hàng đã hoàn tất',
+      icon: <BsCalendarEvent size={20} />,
     },
     {
-      id: 2,
-      title: 'Tổng đơn hàng',
-      value: '773',
-      subText: '+156 đơn so với năm trước',
-      icon: <BsCalendarEvent size={20} />,
-      isGrowth: true,
+      id: 1,
+      title: 'Xe đang sửa',
+      value: '12',
+      subText: 'Cập nhật theo thời gian thực',
+      icon: <BsGraphUpArrow size={20} />,
     },
     {
       id: 3,
       title: 'Dịch vụ đã thực hiện',
       value: '2,054',
-      subText: 'Trung bình 171/tháng',
+      subText: 'Bao gồm tất cả các dịch vụ',
       icon: <BsWrench size={20} />,
-      isGrowth: false,
     },
     {
       id: 4,
-      title: 'Phụ tùng đã bán',
+      title: 'kĩ thuật viên trống',
       value: '1,620',
-      subText: 'Trung bình 135/tháng',
+      subText: '3 người đang làm việc',
       icon: <BsBoxSeam size={20} />,
-      isGrowth: false,
     },
   ];
 
@@ -71,7 +66,7 @@ const CardStatistical = ({ dataaa }: { dataaa: any }) => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'flex-start',
-                marginBottom: '16px'
+                marginBottom: '0px'
               }}>
                 <span style={{
                   color: '#6B7280',
@@ -100,7 +95,6 @@ const CardStatistical = ({ dataaa }: { dataaa: any }) => {
                   fontWeight: '700',
                   color: '#111827',
                   margin: '0 0 8px 0',
-                  lineHeight: '1.2'
                 }}>
                   {item.value}
                 </h3>
@@ -109,7 +103,7 @@ const CardStatistical = ({ dataaa }: { dataaa: any }) => {
                   fontSize: '14px',
                   fontWeight: '500',
                   margin: 0,
-                  color: item.isGrowth ? '#16A34A' : '#6B7280'
+                  color: '#16A34A'
                 }}>
                   {item.subText}
                 </p>
@@ -123,4 +117,4 @@ const CardStatistical = ({ dataaa }: { dataaa: any }) => {
   );
 };
 
-export default CardStatistical;
+export default CardDashboard;

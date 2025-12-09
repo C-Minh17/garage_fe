@@ -6,21 +6,8 @@ interface RevenueData {
   value: number;
 }
 
-const RevenueChart = () => {
-  const data: RevenueData[] = [
-    { month: 'T1/2024', value: 280000000 },
-    { month: 'T2/2024', value: 310000000 },
-    { month: 'T3/2024', value: 295000000 },
-    { month: 'T4/2024', value: 340000000 },
-    { month: 'T5/2024', value: 380000000 },
-    { month: 'T6/2024', value: 350000000 },
-    { month: 'T7/2024', value: 390000000 },
-    { month: 'T8/2024', value: 425000000 },
-    { month: 'T9/2024', value: 400000000 },
-    { month: 'T10/2024', value: 445000000 },
-    { month: 'T11/2024', value: 465000000 },
-    { month: 'T12/2024', value: 510000000 },
-  ];
+const RevenueChart = ({ dataaa }: { dataaa: any }) => {
+  const data = dataaa?.chartData ?? []
 
   const config: ColumnConfig = {
     data,

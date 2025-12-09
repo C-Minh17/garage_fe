@@ -70,7 +70,7 @@ const RepairCar = () => {
         const list = res?.data ?? []
 
         setCarList(list)
-        setDataRepair(list.filter(car => car.active === false))
+        setDataRepair(list.filter(car => car.active === true))
       } finally {
         setLoading(false)
       }

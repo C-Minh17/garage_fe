@@ -9,51 +9,35 @@ import Select from "../../components/Select";
 import SelectSupplier from "../phu-tung/components/selectSupplier";
 import Drawer from "../../components/draw.tsx";
 import Notification from "../notification";
+import CardDashboard from "./components/cards";
 
 
 const DashBoard = () => {
-  const [is, setIs] = useState(false)
-  const [data, setData] = useState<any>()
-  const [loading, setLoading] = useState<boolean>(true)
+  const [dataCard, setDataCard] = useState<any>()
+  const [dataMonthlyRevenue, setDataMonthlyRevenue] = useState<any>()
+  const [dataStatisticSP, setDataStatisticSP] = useState<any>()
 
-  const [open, setOpen] = useState<boolean>(false);
-  const [open2, setOpen2] = useState<boolean>(false);
-
-  const showDrawer = () => {
-    setOpen(true);
-  };
-
-  const onClose = () => {
-    setOpen(false);
-  };
-
-
-  useEffect(() => {
-    getCustomers().then(res => { setData(res?.data) })
-  }, [])
-
-  const options = [
-    { value: "apple", label: "Apple" },
-    { value: "banana", label: "Banana" },
-    { value: "orange", label: "Orange" },
-    { value: "grape", label: "Grape" },
-    { value: "rhre", label: "Gjhjrape" },
-    { value: "hhhhnh", label: "Grjhjape" },
-    { value: "nhngn", label: "Grakkpe" },
-    { value: "grnjhjape", label: "Gra,,,pe" },
-    { value: "grahh pe", label: "Grapmbe" },
-  ];
-
-  const onSub = (value: any) => {
-    console.log(value)
-  }
-
+  // useEffect(() => {
+  //   getStatisticDashboard().then(res => setDataCard(res.data))
+  //   getMonthlyRevenue().then(res => setDataMonthlyRevenue(res.data))
+  //   getStatisticServicePart().then(res => setDataStatisticSP(res.data))
+  // }, [])
   return (
-    <div>
-
-      <div><Button onClick={() => setOpen2(true)}>Thông báo</Button></div>
-
-    </div>
+    <>
+      <div>
+        <h2>Tổng quan</h2>
+        <div>Chào mừng đến với garage</div>
+        <div>
+          <CardDashboard />
+        </div>
+        <div>
+          {/* <RevenueChart dataaa={dataMonthlyRevenue} /> */}
+        </div>
+        <div>
+          {/* <RevenueStatistics dataaa={dataStatisticSP} /> */}
+        </div>
+      </div>
+    </>
   )
 }
 
