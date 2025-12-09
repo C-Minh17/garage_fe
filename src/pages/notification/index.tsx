@@ -22,6 +22,7 @@ const Notification = () => {
     getNotificationsConfirmed().then(res => setDataNotifyConfirm(res.data ? res.data : []))
   }, [isReload])
 
+
   return (
     <>
       <Drawer

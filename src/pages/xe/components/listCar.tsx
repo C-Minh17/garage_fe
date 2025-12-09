@@ -31,7 +31,11 @@ const ListCars = () => {
     { title: "Biển số xe", dataIndex: "plate", width: 120 },
     { title: "Hãng xe", dataIndex: "manufacturer", width: 150 },
     { title: "Mẫu xe", dataIndex: "model", width: 150 },
-    { title: "Mô tả ", dataIndex: "description", width: 300 },
+        { title: "Ghi chú", dataIndex: "description", width: 180, render: (text: string) => {
+        const max = 27;
+        return text?.length > max ? text.slice(0, max) + "..." : text;
+      }
+     },
     {
       title: <div style={{ textAlign: "center" }}>Thao tác</div>,
       width: 80,

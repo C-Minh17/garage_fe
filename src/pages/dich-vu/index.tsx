@@ -49,7 +49,11 @@ const Services = () => {
     { title: "Mã dịch vụ", dataIndex: "serviceCode" },
     { title: "Tên dịch vụ", dataIndex: "name" },
     { title: "Giá (VNĐ)", dataIndex: "price", render: (value) => <div>{Number(value)?.toLocaleString()}</div> },
-    { title: "Mô tả", dataIndex: "description" },
+    { title: "Mô tả", dataIndex: "description", width: 180, render: (text: string) => {
+        const max = 27;
+        return text?.length > max ? text.slice(0, max) + "..." : text;
+      }
+     },
     {
       title: <div style={{ textAlign: "center" }}>Thao tác</div>,
       width: 100,

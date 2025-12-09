@@ -70,7 +70,7 @@ const Parts = () => {
       dataIndex: "description",
       width: 250,
       render: (text: string) => {
-        const max = 60;
+        const max = 27;
         return text?.length > max ? text.slice(0, max) + "..." : text;
       }
     },
