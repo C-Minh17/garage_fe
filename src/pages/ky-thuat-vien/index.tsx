@@ -10,12 +10,14 @@ import { ColorStyle } from "../../styles/colors"
 import FormTechnician from "./components/form"
 import DetailTechnician from "./components/detailTechnician"
 
-import { 
-  getTechnicians, 
-  delTechnician, 
-  searchTechnicians, 
-  sortTechnicians 
+import {
+  getTechnicians,
+  delTechnician,
+  searchTechnicians,
+  sortTechnicians
 } from "../../services/api/techniciansApi"
+import { formatCurrency } from "../../utils/formatCurrency"
+import { useBreakpoint } from "../../hooks/useBreakpoint"
 
 const Technicians = () => {
 
@@ -27,37 +29,41 @@ const Technicians = () => {
   const [idTechnicianDel, setIdTechnicianDel] = useState<string>("")
   const [method, setMethod] = useState<"post" | "put">("post")
   const [dataDetail, setDataDetail] = useState<MTechnician.IRecord>()
-  
+
   const [search, setSearch] = useState<string>("")
   const [debouncedSearch, setDebouncedSearch] = useState<string>("")
-
-  const [isDesc, setIsDesc] = useState<boolean>(true) 
+  const [loading, setLoading] = useState<boolean>(true)
+  const [isDesc, setIsDesc] = useState<boolean>(true)
+  const screen = useBreakpoint()
+  const isMobile = screen.sm
 
   const columns: Column<MTechnician.IRecord>[] = [
     { title: "Mã KTV", dataIndex: "techCode", width: 100 },
     { title: "Tên kỹ thuật viên", dataIndex: "name", width: 150 },
     { title: "Số điện thoại", dataIndex: "phone", width: 120 },
-    { 
-      title: "Lương cơ bản", 
-      dataIndex: "baseSalary", 
+    {
+      title: "Lương cơ bản",
+      dataIndex: "baseSalary",
       width: 150,
-      render: (value) => <div>{Number(value)?.toLocaleString()} VNĐ</div> 
+      render: (value) => (
+        <div>{formatCurrency(value)}</div>
+      )
     },
     { title: "Chức vụ", dataIndex: "position", width: 120 },
-    { 
-      title: "Trạng thái", 
-      dataIndex: "active", 
+    {
+      title: "Trạng thái",
+      dataIndex: "active",
       width: 130,
       render: (active: boolean) => (
         <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-          <div style={{ 
-            width: 8, 
-            height: 8, 
-            borderRadius: '50%', 
+          <div style={{
+            width: 8,
+            height: 8,
+            borderRadius: '50%',
             backgroundColor: active ? '#28a745' : '#dc3545'
           }} />
-          <span style={{ 
-            color: active ? '#28a745' : '#dc3545', 
+          <span style={{
+            color: active ? '#28a745' : '#dc3545',
             fontWeight: 600,
             fontSize: 13
           }}>
@@ -97,7 +103,7 @@ const Technicians = () => {
       if (debouncedSearch) {
         res = await searchTechnicians(debouncedSearch);
       } else {
-        res = await sortTechnicians(!isDesc); 
+        res = await sortTechnicians(!isDesc);
       }
 
       const payload = res?.data;
@@ -133,6 +139,19 @@ const Technicians = () => {
     setMethod(method || "post")
     setIsModal(true)
   }
+  useEffect(() => {
+    if (search) {
+      setLoading(true)
+      searchTechnicians(search)
+        .then(res => setDataTechnician(res.data ?? []))
+        .finally(() => setLoading(false))
+    } else {
+      setLoading(true)
+      getTechnicians()
+        .then(res => setDataTechnician(res?.data ?? []))
+        .finally(() => setLoading(false))
+    }
+  }, [search, isReload])
 
   return (
     <>
@@ -163,15 +182,24 @@ const Technicians = () => {
       </BaseModal>
 
       <div style={{ margin: "50px 0" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: 'center' }}>
-          <h3 style={{ marginLeft: 10 }}>Danh sách kỹ thuật viên</h3>
-          <Button onClick={() => setModal(undefined, "post")} type="gradientPrimary" style={{ padding: "9px 20px", marginRight: 10 }}>
-            + Thêm kỹ thuật viên
-          </Button>
+        <div style={{ display: !isMobile ? "block" : "flex", justifyContent: "space-between", alignItems: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <h1 style={{ fontSize: '28px', fontWeight: '700', color: '#111827', margin: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
+              Danh sách kỹ thuật viên
+            </h1>
+            <p style={{ fontSize: '14px', color: '#6b7280', margin: 0 }}>
+              Quản lý hồ sơ, cấp bậc và phân công công việc
+            </p>
+          </div>
+          <div style={{ textAlign: "end" }}>
+            <Button onClick={() => setModal(undefined, "post")} type="gradientPrimary" style={{ padding: "9px 20px", marginRight: 10 }}>
+              + Thêm kỹ thuật viên
+            </Button>
+          </div>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "end", marginTop: 10, marginBottom: 10 }}>
-          
+
           <Button onClick={() => setIsDesc(!isDesc)} type="dashed" style={{ marginRight: 10, display: 'flex', alignItems: 'center', gap: 5, height: 38 }}>
             {isDesc ? <AiOutlineSortDescending size={20} /> : <AiOutlineSortAscending size={20} />}
             {isDesc ? "Mới nhất" : "Cũ nhất"}
@@ -189,7 +217,7 @@ const Technicians = () => {
           </div>
         </div>
 
-        <TableBase columns={columns} dataSource={dataTechnician} />
+        <TableBase columns={columns} dataSource={dataTechnician} loading={loading} />
       </div>
     </>
   )

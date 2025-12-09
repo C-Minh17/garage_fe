@@ -1,29 +1,7 @@
 import axios from '../../utils/axios';
 import { ipCar } from '../../utils/ip';
 import { ipCustomer } from '../../utils/ip';
-interface ApiResponse<T = any> {
-  success?: boolean;
-  message?: string;
-  status?: number;
-  data?: T;
-}
-// const getCustomers = async (): Promise<ApiResponse<MCustomer.IRecord[]>> => {
-//   // Dùng 'ipCustomer'
-//   const res: any = await axios.get(ipCustomer);
 
-//   if (res.success && res.data) {
-//     return res as ApiResponse<MCustomer.IRecord[]>;
-//   }
-//   if (res.success) {
-//     const { success, ...dataObjects } = res;
-//     const dataArray = Object.values(dataObjects);
-//     return {
-//       data: dataArray as MCustomer.IRecord[],
-//       success: true
-//     };
-//   }
-//   return res as ApiResponse<MCustomer.IRecord[]>;
-// }
 
 const getCar = async (): Promise<ApiResponse<MCar.IResponse[]>> => {
   const res: any = await axios.get(ipCar);
@@ -31,11 +9,27 @@ const getCar = async (): Promise<ApiResponse<MCar.IResponse[]>> => {
   if (res.success && res.data) {
     return res as ApiResponse<MCar.IResponse[]>;
   }
-
   if (res.success) {
     const { success, ...dataObjects } = res;
     const dataArray = Object.values(dataObjects);
+    return {
+      data: dataArray as MCar.IResponse[],
+      success: true
+    };
+  }
 
+  return res as ApiResponse<MCar.IResponse[]>;
+}
+
+const getCarCustomer = async (idCustomer: string): Promise<ApiResponse<MCar.IResponse[]>> => {
+  const res: any = await axios.get(`${ipCar}/customer/${idCustomer}`);
+
+  if (res.success && res.data) {
+    return res as ApiResponse<MCar.IResponse[]>;
+  }
+  if (res.success) {
+    const { success, ...dataObjects } = res;
+    const dataArray = Object.values(dataObjects);
     return {
       data: dataArray as MCar.IResponse[],
       success: true
@@ -66,7 +60,7 @@ const getCarSorted = async (asc: boolean = true): Promise<ApiResponse<MCar.IResp
 };
 const searchCar = async (keyword: string): Promise<ApiResponse<MCar.IResponse[]>> => {
   const res: any = await axios.get(`${ipCar}/search?keyword=${keyword}`);
-  
+
   if (res.success && res.data) {
     return res as ApiResponse<MCar.IResponse[]>;
   }
@@ -100,5 +94,5 @@ export {
   deleteCar,
   getCarSorted,
   searchCar,
-  // getCustomers
+  getCarCustomer,
 }

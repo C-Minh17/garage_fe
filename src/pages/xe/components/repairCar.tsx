@@ -4,18 +4,23 @@ import Button from "../../../components/Button"
 import { notify } from "../../../components/Notification"
 import { AiOutlineCheckCircle, AiOutlineSearch, AiOutlineSortAscending, AiOutlineSortDescending } from "react-icons/ai"
 import { Input } from "../../../components/FormBase"
-import { getCar, putCar } from "../../../services/api/carApi"
+import { getCar, putCar, searchCar } from "../../../services/api/carApi"
 import BaseModal from "../../../components/baseModal"
 import { ColorStyle } from "../../../styles/colors"
 import { IoIosCheckmarkCircleOutline } from "react-icons/io"
+import { useBreakpoint } from "../../../hooks/useBreakpoint"
 
 const RepairCar = () => {
+  const [carList, setCarList] = useState<MCar.IResponse[]>([])
   const [dataRepair, setDataRepair] = useState<MCar.IResponse[]>([])
   const [isReload, setIsReload] = useState<boolean>(false)
   const [search, setSearch] = useState<string>("")
   const [isModalConfirm, setIsModalConfirm] = useState<boolean>(false)
   const [selectedCar, setSelectedCar] = useState<MCar.IResponse | null>(null)
   const [isDesc, setIsDesc] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true)
+  const screen = useBreakpoint()
+  const isMobile = screen.sm
 
   const columns: Column<MCar.IResponse>[] = [
     {
@@ -38,41 +43,47 @@ const RepairCar = () => {
       dataIndex: "description",
       width: 300
     },
-    {
-      title: "Thao tác",
-      width: 120,
-      render: (_, record) => (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Button
-            onClick={() => openConfirmModal(record)}
-            type="success"
-            style={{ 
-                padding: "5px 10px", 
-                fontSize: 13, 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: 5 
-            }}
-          >
-            <AiOutlineCheckCircle /> Hoàn thành
-          </Button>
-        </div>
-      )
-    },
+    // {
+    //   title: <div style={{ textAlign: "center" }}>Thao tác</div>,
+    //   width: 120,
+    //   render: (_, record) => (
+    //     <div style={{ display: "flex", justifyContent: "center" }}>
+    //       <Button
+    //         onClick={() => openConfirmModal(record)}
+    //         type="primary"
+    //         style={{ 
+    //             padding: "5px 10px", 
+    //             fontSize: 13, 
+    //             display: 'flex', 
+    //             alignItems: 'center', 
+    //             gap: 5 
+    //         }}
+    //       >
+    //         <AiOutlineCheckCircle /> Hoàn thành
+    //       </Button>
+    //     </div>
+    //   )
+    // },
   ]
-
   useEffect(() => {
-    getCar().then(res => {
-      if (res.data) {
-        const listRepair = res.data.filter(car => car.active === false)
-        setDataRepair(listRepair)
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        let res = search ? await searchCar(search) : await getCar()
+        const list = res?.data ?? []
+
+        setCarList(list)
+        setDataRepair(list.filter(car => car.active === true))
+      } finally {
+        setLoading(false)
       }
-    })
-  }, [isReload])
+    }
+    fetchData()
+  }, [search, isReload])
 
   const openConfirmModal = (car: MCar.IResponse) => {
-      setSelectedCar(car)
-      setIsModalConfirm(true)
+    setSelectedCar(car)
+    setIsModalConfirm(true)
   }
 
   const handleFinishRepair = async () => {
@@ -84,29 +95,29 @@ const RepairCar = () => {
         model: selectedCar.model,
         manufacturer: selectedCar.manufacturer,
         description: selectedCar.description,
-        customerId: selectedCar.customerId, 
-        active: true 
+        customerId: selectedCar.customerId,
+        active: true
       }
 
       const res = await putCar(selectedCar.id, payload)
 
       if (res.success) {
-        notify({ 
-            title: "Thành công", 
-            type: "success", 
-            description: `Xe ${selectedCar.plate} đã sửa xong và được đưa về danh sách hoạt động.` 
+        notify({
+          title: "Thành công",
+          type: "success",
+          description: `Xe ${selectedCar.plate} đã sửa xong và được đưa về danh sách chờ thanh toán.`
         })
-        setIsReload(!isReload) 
+        setIsReload(!isReload)
         setIsModalConfirm(false)
       } else {
-        notify({ 
-            title: "Thất bại", 
-            type: "error", 
-            description: res.message || "Có lỗi xảy ra" 
+        notify({
+          title: "Thất bại",
+          type: "error",
+          description: res.message || "Có lỗi xảy ra"
         })
       }
     } catch (error) {
-        notify({ title: "Error", type: "error", description: "Lỗi kết nối server" })
+      notify({ title: "Error", type: "error", description: "Lỗi kết nối server" })
     }
   }
 
@@ -114,17 +125,17 @@ const RepairCar = () => {
     let result = [...dataRepair]
 
     if (search) {
-        const s = search.toLowerCase()
-        result = result.filter(car => 
-          car.plate.toLowerCase().includes(s) ||
-          car.model.toLowerCase().includes(s)
-        )
+      const s = search.toLowerCase()
+      result = result.filter(car =>
+        car.plate.toLowerCase().includes(s) ||
+        car.model.toLowerCase().includes(s)
+      )
     }
 
     result.sort((a, b) => {
-        const dateA = new Date(a.createdAt || "").getTime()
-        const dateB = new Date(b.createdAt || "").getTime()
-        return isDesc ? dateB - dateA : dateA - dateB 
+      const dateA = new Date(a.createdAt || "").getTime()
+      const dateB = new Date(b.createdAt || "").getTime()
+      return isDesc ? dateB - dateA : dateA - dateB
     })
 
     return result
@@ -141,9 +152,9 @@ const RepairCar = () => {
           padding: 20
         }}>
           <IoIosCheckmarkCircleOutline style={{ fontSize: 70, color: ColorStyle.Success || 'green' }} />
-          <h3 style={{marginTop: 10}}>Xác nhận sửa xong?</h3>
-          <p style={{textAlign: 'center', marginBottom: 20}}>
-            Bạn xác nhận xe <b>{selectedCar?.plate}</b> đã hoàn tất quá trình sửa chữa? <br/>
+          <h3 style={{ marginTop: 10 }}>Xác nhận sửa xong?</h3>
+          <p style={{ textAlign: 'center', marginBottom: 20 }}>
+            Bạn xác nhận xe <b>{selectedCar?.plate}</b> đã hoàn tất quá trình sửa chữa? <br />
             Xe sẽ được chuyển sang danh sách xe hoạt động.
           </p>
           <div>
@@ -154,12 +165,12 @@ const RepairCar = () => {
       </BaseModal>
 
       <div style={{
-        display: "flex",
+        display: !isMobile ? "block" : "flex",
         justifyContent: "space-between",
         alignItems: 'center'
       }}>
         <h3 style={{ marginLeft: 10 }}>Danh sách xe đang sửa chữa</h3>
-        
+
         <div style={{
           display: "flex",
           alignItems: "center",
@@ -168,41 +179,37 @@ const RepairCar = () => {
           <Button
             onClick={() => setIsDesc(!isDesc)}
             type="dashed"
-            style={{ 
-              marginRight: 10, 
-              display: 'flex', 
-              alignItems: 'center', 
+            style={{
+              marginRight: 10,
+              display: 'flex',
+              alignItems: 'center',
               gap: 5,
               height: 38
             }}
           >
-            {isDesc ? <AiOutlineSortDescending size={20}/> : <AiOutlineSortAscending size={20}/>}
+            {isDesc ? <AiOutlineSortDescending size={20} /> : <AiOutlineSortAscending size={20} />}
             {isDesc ? "Mới nhất" : "Cũ nhất"}
           </Button>
 
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-             <AiOutlineSearch style={{ position: 'absolute', left: 15, zIndex: 1 }}/>
-             <Input
-                name="search"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                style={{
-                  width: 230,
-                  paddingLeft: 35,
-                  marginRight: 10,
-                  borderRadius: 7
-                }}
-                placeholder="Tìm xe đang sửa..."
-              />
+            <AiOutlineSearch style={{ position: 'absolute', left: 15, zIndex: 1 }} />
+            <Input
+              name="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{
+                width: 230,
+                paddingLeft: 35,
+                marginRight: 10,
+                borderRadius: 7
+              }}
+              placeholder="Tìm xe đang sửa..."
+            />
           </div>
         </div>
       </div>
 
-      <TableBase
-        columns={columns}
-        dataSource={getProcessedData()}
-        emptyText="Không có xe nào đang sửa chữa"
-      />
+      <TableBase columns={columns} dataSource={getProcessedData()} emptyText="Không có xe nào đang sửa chữa" loading={loading} />
     </div>
   )
 }

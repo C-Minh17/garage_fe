@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import TableBase, { Column } from "../../../components/BaseTable"
-import { deletePart, getPart } from "../../../services/api/partApi"
+import { deletePart, getPart, getPartSearch } from "../../../services/api/partApi"
 import { Input } from "../../../components/FormBase"
 import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye, AiOutlineSearch } from "react-icons/ai"
 import Button from "../../../components/Button"
@@ -10,6 +10,8 @@ import ConfirmDelete from "../../../components/confirmDelete"
 import { notify } from "../../../components/Notification"
 import DetailPart from "./detailPart"
 import Tag from "../../../components/Tag"
+import { formatCurrency } from "../../../utils/formatCurrency"
+import { useBreakpoint } from "../../../hooks/useBreakpoint"
 
 const Parts = () => {
   const [dataPart, setDataPart] = useState<MPart.IRecord[]>([])
@@ -21,6 +23,9 @@ const Parts = () => {
   const [idPartdel, setIdPartdel] = useState<string>('')
   const [isModalDel, setIsModalDel] = useState<boolean>(false)
   const [isModalDetail, setIsModalDetail] = useState<boolean>(false)
+  const [querySearch, setQuerySearch] = useState<any>()
+  const screen = useBreakpoint()
+  const isMobile = screen.sm
 
   const columns: Column<MPart.IRecord>[] = [
     {
@@ -33,12 +38,13 @@ const Parts = () => {
       dataIndex: "name",
       width: 150,
     },
+
     {
       title: <div style={{ textAlign: "center" }}>{`Giá bán (VND)`}</div>,
       dataIndex: "price",
       width: 120,
       render: (value) => (
-        <div style={{ textAlign: "center" }}>{value.toLocaleString("vi-VN")} đ</div>
+        <div style={{ textAlign: "center" }}>{formatCurrency(value)}</div>
       )
     },
     {
@@ -68,7 +74,7 @@ const Parts = () => {
       dataIndex: "description",
       width: 250,
       render: (text: string) => {
-        const max = 60;
+        const max = 27;
         return text?.length > max ? text.slice(0, max) + "..." : text;
       }
     },
@@ -111,10 +117,19 @@ const Parts = () => {
   }
 
   useEffect(() => {
-    setLoading(true)
-    getPart().then(res => setDataPart(res?.data ? res.data : []))
-    setLoading(false)
-  }, [isReload])
+    if (querySearch) {
+      setLoading(true)
+      getPartSearch(querySearch)
+        .then(res => setDataPart(res?.data ? res.data : []))
+        .finally(() => setLoading(false))
+    } else {
+      setLoading(true)
+      getPart()
+        .then(res => setDataPart(res?.data ? res.data : []))
+        .finally(() => setLoading(false))
+    }
+  }, [isReload, querySearch])
+
   return (
     <>
       <BaseModal
@@ -143,12 +158,12 @@ const Parts = () => {
 
       <div style={{ margin: "50px 0" }}>
         <div style={{
-          display: "flex",
+          display: !isMobile ? "block" : "flex",
           justifyContent: "space-between",
           alignItems: 'center'
         }}>
           <h3 style={{ marginLeft: 10 }}>Danh sách phụ tùng của garage</h3>
-          <div>
+          <div style={{ textAlign: "end" }}>
             <Button onClick={() => setModal(undefined, 'post')} style={{ padding: "9px 20px", marginRight: 10 }} type="gradientPrimary">+ Thêm phụ tùng</Button>
           </div>
         </div>
@@ -169,6 +184,7 @@ const Parts = () => {
                   borderRadius: 7
                 }}
                 placeholder="Tìm theo mã, tên sản phẩm ..."
+                onChange={e => setQuerySearch(e.target.value)}
               />
             </div>
             <TableBase

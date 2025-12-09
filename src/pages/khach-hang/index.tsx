@@ -10,6 +10,7 @@ import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye, AiOutlineSearch } from "r
 import { Input } from "../../components/FormBase"
 import { notify } from "../../components/Notification"
 import ConfirmDelete from "../../components/confirmDelete"
+import { useBreakpoint } from "../../hooks/useBreakpoint"
 
 
 const Customers = () => {
@@ -25,6 +26,8 @@ const Customers = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [idKHdel, setIdKHdel] = useState<string>()
   const [querySearch, setQuerySearch] = useState<any>()
+  const screen = useBreakpoint()
+  const isMobile = screen.sm
 
   const Columns: Column<MCustomer.IRecord>[] = [
     {
@@ -66,9 +69,10 @@ const Customers = () => {
       ),
     },
     {
-      title: "Ghi chú",
-      dataIndex: "note",
-      render: (value) => <div style={{ minWidth: "150px" }}>{value}</div>,
+      title: "Ghi chú", dataIndex: "note", width: 180, render: (text: string) => {
+        const max = 27;
+        return text?.length > max ? text.slice(0, max) + "..." : text;
+      }
     },
     {
       title: <div style={{ textAlign: "center" }}>Thao tác</div>,
@@ -110,7 +114,7 @@ const Customers = () => {
       dataIndex: "description",
       width: 180,
       render: (text: string) => {
-        const max = 60;
+        const max = 15;
         return text?.length > max ? text.slice(0, max) + "..." : text;
       }
     },
@@ -155,12 +159,12 @@ const Customers = () => {
     if (querySearch) {
       setLoading(true)
       getCustomerSearch(querySearch)
-        .then(res => setDataCustomer(res?.data))
+        .then(res => setDataCustomer(res?.data ? res.data : []))
         .finally(() => setLoading(false))
     } else {
       setLoading(true)
       getCustomers()
-        .then(res => setDataCustomer(res?.data))
+        .then(res => setDataCustomer(res?.data ? res.data : []))
         .finally(() => setLoading(false))
     }
 
@@ -187,12 +191,12 @@ const Customers = () => {
         <ConfirmDelete onCancel={() => setIsModalDel(false)} onConfirm={() => delModal(idKHdel)} />
       </BaseModal>
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "20px 10px" }}>
+      <div style={{ display: !isMobile ? "block" : "flex", justifyContent: "space-between", alignItems: "center", margin: "20px 10px" }}>
         <div>
           <h1 style={{ margin: "0" }}>Danh sách khách hàng</h1>
           <div>Danh sách và thông tin khách hàng</div>
         </div>
-        <div>
+        <div style={{ textAlign: "end" }}>
           <Button onClick={() => setModal(undefined, 'post')} style={{ padding: "10px 20px" }} type="gradientPrimary">+ Thêm khách hàng</Button>
         </div>
       </div>

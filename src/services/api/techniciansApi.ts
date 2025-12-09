@@ -1,12 +1,6 @@
 import axios from "../../utils/axios"
-import { ipTechnician } from "../../utils/ip" 
+import { ipTechnician } from "../../utils/ip"
 
-interface ApiResponse<T = any> {
-  success?: boolean
-  message?: string
-  status?: number
-  data?: T
-}
 
 const getTechnicians = async (): Promise<ApiResponse<MTechnician.IRecord[]>> => {
   const res = await axios.get(ipTechnician)

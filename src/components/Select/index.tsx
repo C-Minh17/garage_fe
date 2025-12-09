@@ -13,9 +13,10 @@ export interface ISelectProps {
   options: Option[];
   multiple?: boolean;
   placeholder?: string;
+  onChange?: (value: any) => void;
 }
 
-const Select = ({ name, options, multiple = false, placeholder = "Select..." }: ISelectProps) => {
+const Select = ({ name, options, multiple = false, placeholder = "Select...", onChange }: ISelectProps) => {
   const { values, setFieldValue } = useContext(FormContext);
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -42,12 +43,17 @@ const Select = ({ name, options, multiple = false, placeholder = "Select..." }: 
         ? selected.filter(s => s.value !== option.value)
         : [...selected, option];
       setSelected(newSelected);
-      setFieldValue(name, newSelected.map(s => s.value));
+      const finalValues = newSelected.map(s => s.value);
+      setFieldValue(name, finalValues);
+
+      if (onChange) onChange(finalValues);
     } else {
       newSelected = [option];
       setSelected(newSelected);
       setFieldValue(name, option.value);
       setOpen(false);
+
+      if (onChange) onChange(option.value);
     }
   };
 
@@ -55,20 +61,18 @@ const Select = ({ name, options, multiple = false, placeholder = "Select..." }: 
     o.label.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Close dropdown khi click ngoài
-  // useEffect(() => {
-  //   const handleClickOutside = (e: MouseEvent) => {
-  //     if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-  //       setOpen(false);
-  //     }
-  //   };
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => document.removeEventListener("mousedown", handleClickOutside);
-  // }, []);
-  // ref={containerRef}
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <div className="antd-select" >
+    <div className="antd-select" ref={containerRef}>
       <div className={`select-input ${open ? "open" : ""}`} onClick={toggleOpen}>
         {multiple && selected.length > 0 ? (
           <div className="tags">

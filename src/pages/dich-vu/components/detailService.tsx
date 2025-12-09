@@ -41,7 +41,7 @@ const DetailService = ({ data }: IDetailService) => {
 
       <div style={rowStyle}>
         <div style={labelStyle}>Mã dịch vụ:</div>
-        <div style={{ ...valueStyle, color: ColorStyle.Primary, fontWeight: "bold" }}>
+        <div style={{ ...valueStyle, fontWeight: "bold" }}>
             {data?.serviceCode || "-"}
         </div>
       </div>
@@ -53,7 +53,7 @@ const DetailService = ({ data }: IDetailService) => {
 
       <div style={rowStyle}>
         <div style={labelStyle}>Đơn giá:</div>
-        <div style={{ ...valueStyle, color: "#389e0d", fontWeight: "bold", fontSize: 16 }}>
+        <div style={{ ...valueStyle, fontWeight: "bold", fontSize: 16 }}>
           {data?.price ? Number(data.price).toLocaleString("vi-VN") : "0"} <span style={{fontSize: 12, color: '#999', fontWeight: 400}}>VNĐ</span>
         </div>
       </div>

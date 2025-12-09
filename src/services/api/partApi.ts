@@ -1,12 +1,6 @@
 import axios from "../../utils/axios"
 import { ipPart } from "../../utils/ip"
 
-interface ApiResponse<T = any> {
-  success?: boolean
-  message?: string
-  status?: number
-  data?: T
-}
 
 const getPart = async () => {
   const res = await axios.get(ipPart)
@@ -33,10 +27,16 @@ const deletePart = async (id: string) => {
   return res as ApiResponse<null>
 }
 
+const getPartSearch = async (query: any) => {
+  const res = await axios.get(`${ipPart}/search?keyword=${query}`)
+  return res as ApiResponse<MPart.IRecord[]>
+}
+
 export {
   getPart,
   getPartId,
   postPart,
   putPart,
-  deletePart
+  deletePart,
+  getPartSearch,
 }

@@ -24,7 +24,6 @@ const Cars = () => {
 
       <p>Danh sách quản lý thông tin xe</p>
 
-      {/* Segmented */}
       <div>
         <div style={{
           display: "inline-flex",
@@ -57,7 +56,6 @@ const Cars = () => {
         </div>
       </div>
 
-      {/* Content */}
       <div>
         {segmented === 1 ? (
           <ListCars />

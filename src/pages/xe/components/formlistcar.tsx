@@ -1,13 +1,14 @@
-import { Col, Container, Row } from "react-bootstrap";
-import React from "react";
+import { Col, Container, Row, Form as BForm } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
 import Form from "../../../components/FormBase";
 import Button from "../../../components/Button";
+import { ColorStyle } from "../../../styles/colors";
 import { notify } from "../../../components/Notification";
 import { postCar, putCar } from "../../../services/api/carApi";
 import CustomerSelect from "../../khach-hang/components/select";
 
 interface IFormCar {
-  valueInitial?: MCar.IResponse;
+  valueInitial?: Partial<MCar.IResponse>;
   method: "post" | "put";
   setIsModal?: (a: boolean) => void;
   isReload?: boolean;
@@ -15,6 +16,15 @@ interface IFormCar {
 }
 
 const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IFormCar) => {
+  const [isActive, setIsActive] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (method === 'put' && valueInitial) {
+      setIsActive(!!valueInitial?.active);
+    } else {
+      setIsActive(false);
+    }
+  }, [valueInitial, method]);
 
   const onSubmit = async (data: any) => {
     const customerId = method === "post" ? data.customerId : valueInitial?.customerId;
@@ -27,8 +37,8 @@ const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IF
       return;
     }
     if (!data.plate) {
-        notify({ title: "Lỗi", type: "error", description: "Vui lòng nhập biển số xe!" });
-        return;
+      notify({ title: "Lỗi", type: "error", description: "Vui lòng nhập biển số xe!" });
+      return;
     }
     const payload: MCar.IRequest = {
       plate: data.plate,
@@ -36,7 +46,8 @@ const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IF
       manufacturer: data.manufacturer || "",
       description: data.description || "",
       customerId: customerId,
-      active: method === "put" ? valueInitial?.active : false 
+      // active: method === "put" ? valueInitial?.active : false 
+      active: isActive,
     };
 
     let res: any;
@@ -46,8 +57,8 @@ const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IF
         res = await postCar(payload);
       } else {
         if (!valueInitial?.id) {
-            notify({ title: "Lỗi", type: "error", description: "Không tìm thấy ID xe cần sửa" });
-            return;
+          notify({ title: "Lỗi", type: "error", description: "Không tìm thấy ID xe cần sửa" });
+          return;
         }
         res = await putCar(valueInitial.id, payload);
       }
@@ -64,7 +75,7 @@ const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IF
         notify({ title: "Lỗi", type: "error", description: res?.message || "Có lỗi xảy ra từ phía server" });
       }
     } catch (error) {
-        notify({ title: "Lỗi hệ thống", type: "error", description: "Không thể kết nối đến server" });
+      notify({ title: "Lỗi hệ thống", type: "error", description: "Không thể kết nối đến server" });
     }
   };
 
@@ -79,9 +90,9 @@ const FormCar = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IF
           <Col sm={12}>
             <label className="form-label required mb-1">Khách hàng</label>
             {method === "post" ? (
-              <CustomerSelect 
+              <CustomerSelect
                 method={method}
-                name="customerId" 
+                name="customerId"
               />
             ) : (
               <Form.Input name="customerCode" disabled />
