@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Badge, Button, ListGroup, OverlayTrigger, Popover, Spinner, Tooltip, Modal, Card, Tabs, Tab } from 'react-bootstrap';
 import { AiOutlineBell, AiOutlineCheck, AiOutlineSync, AiOutlineClose, AiOutlineEye, AiOutlineUser, AiOutlinePhone, AiOutlineEnvironment, AiOutlineInbox, AiOutlineDelete, AiOutlineWarning } from 'react-icons/ai';
-import { getPartBooking, confirmPartBooking, deletePartBooking, deleteAllPartBookings, cancelPartBooking } from '../../services/api/adminpartbookingApi'; 
+import { getPartBooking, confirmPartBooking, deletePartBooking, deleteAllPartBookings, cancelPartBooking} from '../../services/api/adminpartbookingApi'; 
 import { notify } from '../../components/Notification';
 
 const AdminNotification = () => {
@@ -21,18 +21,18 @@ const AdminNotification = () => {
 
     const [key, setKey] = useState('pending');
 
-    const customStyles = `
-        .notification-scroll::-webkit-scrollbar { width: 6px; }
-        .notification-scroll::-webkit-scrollbar-track { background: #f8f9fa; }
-        .notification-scroll::-webkit-scrollbar-thumb { background: #dee2e6; border-radius: 10px; }
-        .notification-scroll::-webkit-scrollbar-thumb:hover { background: #adb5bd; }
-        .notification-item { transition: all 0.2s ease; border-left: 3px solid transparent; }
-        .notification-item:hover { background-color: #f8f9fa; border-left: 3px solid #0d6efd; }
-        .action-btn { transition: transform 0.1s; }
-        .action-btn:active { transform: scale(0.95); }
-        .nav-tabs .nav-link { font-size: 13px; font-weight: 600; color: #6c757d; }
-        .nav-tabs .nav-link.active { color: #0d6efd; }
-    `;
+    // const customStyles = `
+    //     .notification-scroll::-webkit-scrollbar { width: 6px; }
+    //     .notification-scroll::-webkit-scrollbar-track { background: #f8f9fa; }
+    //     .notification-scroll::-webkit-scrollbar-thumb { background: #dee2e6; border-radius: 10px; }
+    //     .notification-scroll::-webkit-scrollbar-thumb:hover { background: #adb5bd; }
+    //     .notification-item { transition: all 0.2s ease; border-left: 3px solid transparent; }
+    //     .notification-item:hover { background-color: #f8f9fa; border-left: 3px solid #0d6efd; }
+    //     .action-btn { transition: transform 0.1s; }
+    //     .action-btn:active { transform: scale(0.95); }
+    //     .nav-tabs .nav-link { font-size: 13px; font-weight: 600; color: #6c757d; }
+    //     .nav-tabs .nav-link.active { color: #0d6efd; }
+    // `;
 
     const fetchNotifications = async () => {
         setLoading(true);
@@ -208,7 +208,6 @@ const AdminNotification = () => {
 
     const popoverContent = (
         <Popover id="popover-notification" className="shadow-lg border-0" style={{ width: '420px', maxWidth: '95vw' }}>
-            <style>{customStyles}</style>
             <div className="d-flex justify-content-between align-items-center bg-white px-3 pt-3 pb-2">
                 <h6 className="fw-bold text-primary mb-0">Quản lý đơn hàng</h6>
                 <Button variant="light" size="sm" className="rounded-circle p-1 text-muted" onClick={fetchNotifications}>
