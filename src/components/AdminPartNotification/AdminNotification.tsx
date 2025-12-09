@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Badge, Button, ListGroup, OverlayTrigger, Popover, Spinner, Tooltip, Modal, Card, Tabs, Tab } from 'react-bootstrap';
-import { AiOutlineBell, AiOutlineCheck, AiOutlineSync, AiOutlineClose, AiOutlineEye, AiOutlineUser, AiOutlinePhone, AiOutlineEnvironment, AiOutlineInbox, AiOutlineDelete, AiOutlineWarning } from 'react-icons/ai';
-import { getPartBooking, confirmPartBooking, deletePartBooking, deleteAllPartBookings, cancelPartBooking } from '../../services/api/adminpartbookingApi';
+
+import { Badge, Button, ListGroup, OverlayTrigger, Popover, Spinner, Modal, Tabs, Tab, Tooltip } from 'react-bootstrap';
+import { AiOutlineBell, AiOutlineCheck, AiOutlineSync, AiOutlineClose, AiOutlineEye, AiOutlineInbox, AiOutlineDelete, AiOutlineWarning } from 'react-icons/ai';
+import { getPartBooking, confirmPartBooking, deleteAllPartBookings, cancelPartBooking} from '../../services/api/adminpartbookingApi'; 
+
 import { notify } from '../../components/Notification';
+import AdminPartBookingDetail from './components/detail';
 
 const AdminNotification = () => {
     const [pendingList, setPendingList] = useState<MPartBooking.IRecord[]>([]);
@@ -20,20 +23,6 @@ const AdminNotification = () => {
     });
 
     const [key, setKey] = useState('pending');
-
-    // const customStyles = `
-    //     .notification-scroll::-webkit-scrollbar { width: 6px; }
-    //     .notification-scroll::-webkit-scrollbar-track { background: #f8f9fa; }
-    //     .notification-scroll::-webkit-scrollbar-thumb { background: #dee2e6; border-radius: 10px; }
-    //     .notification-scroll::-webkit-scrollbar-thumb:hover { background: #adb5bd; }
-    //     .notification-item { transition: all 0.2s ease; border-left: 3px solid transparent; }
-    //     .notification-item:hover { background-color: #f8f9fa; border-left: 3px solid #0d6efd; }
-    //     .action-btn { transition: transform 0.1s; }
-    //     .action-btn:active { transform: scale(0.95); }
-    //     .nav-tabs .nav-link { font-size: 13px; font-weight: 600; color: #6c757d; }
-    //     .nav-tabs .nav-link.active { color: #0d6efd; }
-    // `;
-
     const fetchNotifications = async () => {
         setLoading(true);
         try {
@@ -208,7 +197,7 @@ const AdminNotification = () => {
 
     const popoverContent = (
         <Popover id="popover-notification" className="shadow-lg border-0" style={{ width: '420px', maxWidth: '95vw' }}>
-            <div className="d-flex justify-content-between align-items-center bg-white px-3 pt-3 pb-2">
+           <div className="d-flex justify-content-between align-items-center bg-white px-3 pt-3 pb-2">
                 <h6 className="fw-bold text-primary mb-0">Quản lý đơn hàng</h6>
                 <Button variant="light" size="sm" className="rounded-circle p-1 text-muted" onClick={fetchNotifications}>
                     <AiOutlineSync className={loading ? "fa-spin" : ""} size={16} />
@@ -220,6 +209,7 @@ const AdminNotification = () => {
                     <div className="notification-scroll" style={{ maxHeight: '400px', overflowY: 'auto' }}>
                         {renderList(pendingList, true)}
                     </div>
+
                 </Tab>
 
                 <Tab eventKey="confirmed" title={`Lịch sử (${confirmedList.length})`}>
@@ -256,56 +246,13 @@ const AdminNotification = () => {
                 </div>
             </OverlayTrigger>
 
-            <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-                <Modal.Header closeButton className="border-bottom-0 bg-light">
-                    <Modal.Title className="fs-5 fw-bold">
-                        {selectedOrder?.isActive ? 'Chi tiết đơn đã duyệt' : 'Xác nhận đơn hàng'}
-                    </Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body className="p-0">
-                    {selectedOrder && (
-                        <>
-                            <div className="p-4 bg-white border-bottom">
-                                <h6 className="text-uppercase text-muted small fw-bold mb-3">Thông tin khách hàng</h6>
-                                <div className="d-flex align-items-center mb-2"><AiOutlineUser className="text-primary me-2 fs-5" /><span className="fw-bold">{selectedOrder.customerName}</span></div>
-                                <div className="d-flex align-items-center mb-2"><AiOutlinePhone className="text-primary me-2 fs-5" /><span>{selectedOrder.phone || '---'}</span></div>
-                                <div className="d-flex align-items-start mb-2"><AiOutlineEnvironment className="text-primary me-2 fs-5 mt-1" /><span>{selectedOrder.address || '---'}</span></div>
-                            </div>
-
-                            <div className="p-4 bg-light">
-                                <h6 className="text-uppercase text-muted small fw-bold mb-3">Sản phẩm</h6>
-                                <Card className="border-0 shadow-sm">
-                                    <Card.Body>
-                                        <div className="fw-bold text-primary mb-1">{selectedOrder.partName}</div>
-                                        <div className="fw-bold text-danger fs-5">
-                                            {formatMoney((selectedOrder.price || 0) * selectedOrder.quantity)}
-                                        </div>
-                                    </Card.Body>
-                                </Card>
-                            </div>
-                        </>
-                    )}
-                </Modal.Body>
-
-                <Modal.Footer className="border-top-0 bg-light">
-                    <Button variant="outline-secondary" onClick={() => setShowModal(false)} className="rounded-pill px-4">Đóng</Button>
-
-                    {selectedOrder && !selectedOrder.isActive && selectedOrder.status !== 'CANCELLED' && (
-                        <>
-                            <Button variant="outline-danger" className="rounded-pill px-4"
-                                onClick={() => handleRejectClick(selectedOrder.id)}>
-                                Từ chối
-                            </Button>
-
-                            <Button variant="primary" className="rounded-pill px-4 fw-bold shadow-sm"
-                                onClick={() => handleConfirmOrder(selectedOrder.id)}>
-                                Xác nhận
-                            </Button>
-                        </>
-                    )}
-                </Modal.Footer>
-            </Modal>
+            <AdminPartBookingDetail 
+                show={showModal}
+                onHide={() => setShowModal(false)}
+                data={selectedOrder}
+                onConfirm={handleConfirmOrder}
+                onReject={handleRejectClick}
+            />
 
             <Modal
                 show={confirmModal.show}

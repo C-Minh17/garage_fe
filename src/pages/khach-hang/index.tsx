@@ -65,11 +65,11 @@ const Customers = () => {
         >{record.cars?.length ?? 0} xe</Tag>
       ),
     },
-    {
-      title: "Ghi chú",
-      dataIndex: "note",
-      render: (value) => <div style={{ minWidth: "150px" }}>{value}</div>,
-    },
+    { title: "Ghi chú", dataIndex: "note", width: 180, render: (text: string) => {
+        const max = 27;
+        return text?.length > max ? text.slice(0, max) + "..." : text;
+      }
+     },
     {
       title: <div style={{ textAlign: "center" }}>Thao tác</div>,
       render: (value, record) => (
@@ -110,7 +110,7 @@ const Customers = () => {
       dataIndex: "description",
       width: 180,
       render: (text: string) => {
-        const max = 60;
+        const max = 15;
         return text?.length > max ? text.slice(0, max) + "..." : text;
       }
     },
