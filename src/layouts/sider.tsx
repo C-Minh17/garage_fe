@@ -13,6 +13,7 @@ import {
   AiOutlineBranches,
   AiOutlineCar,
   AiOutlineSetting,
+  AiOutlineOpenAI,
 } from "react-icons/ai";
 import { useState } from "react";
 import { useBreakpoint } from "../hooks/useBreakpoint";
@@ -59,8 +60,8 @@ const SiderManage = ({ isSider, setIsSider }: { isSider: boolean, setIsSider?: (
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: "rgba(0,0,0,0.3)", // màn hình mờ
-            zIndex: 100000, // thấp hơn sidebar
+            backgroundColor: "rgba(0,0,0,0.3)",
+            zIndex: 100000,
           }}
         /> : <></> : <></>
       }
@@ -87,8 +88,8 @@ const SiderManage = ({ isSider, setIsSider }: { isSider: boolean, setIsSider?: (
             color: ColorStyle.SidebarForeground,
           }}
         >
-          <AiOutlineAntDesign size={40} />{" "}
-          <span className="logo-text">{isSider ? "Bổn lào" : ""}</span>
+          <AiOutlineOpenAI size={40} />{" "}
+          <span style={{ fontSize: 19 }} className="logo-text">{isSider ? "Auto Pro" : ""}</span>
         </div>
 
         <div style={{ padding: "10px" }}>
@@ -125,7 +126,6 @@ const SiderManage = ({ isSider, setIsSider }: { isSider: boolean, setIsSider?: (
               { to: "/services", icon: <AiOutlineTool size={18} />, label: "Dịch vụ" },
               { to: "/parts", icon: <AiOutlineCodeSandbox size={18} />, label: "Phụ tùng" },
               { to: "/technicians", icon: <AiOutlineBranches size={18} />, label: "Kỹ thuật viên" },
-              // { to: "/settings", icon: <AiOutlineSetting size={18} />, label: "Thông tin cá nhân" },
             ].map((item) => (
               <Link
                 key={item.to}

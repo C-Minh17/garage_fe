@@ -10,6 +10,9 @@ import SelectSupplier from "../phu-tung/components/selectSupplier";
 import Drawer from "../../components/draw.tsx";
 import Notification from "../notification";
 import CardDashboard from "./components/cards";
+import PartDashboard from "./components/dashboardPart";
+import { Col, Row } from "react-bootstrap";
+import TopCustomerDashboard from "./components/dashboardCustomer";
 
 
 const DashBoard = () => {
@@ -26,15 +29,27 @@ const DashBoard = () => {
     <>
       <div>
         <h2>Tổng quan</h2>
-        <div>Chào mừng đến với garage</div>
+        <div
+          style={{
+            fontSize: "17px",
+            color: "#555",
+            marginBottom: "28px",
+          }}
+        >
+          Chào mừng đến với garage! Dưới đây là tổng quan hoạt động trong ngày hôm nay.
+        </div>
         <div>
           <CardDashboard />
         </div>
-        <div>
-          {/* <RevenueChart dataaa={dataMonthlyRevenue} /> */}
-        </div>
-        <div>
-          {/* <RevenueStatistics dataaa={dataStatisticSP} /> */}
+        <div style={{ margin: "40px 0" }}>
+          <Row>
+            <Col xs={12} lg={6}>
+              <TopCustomerDashboard />
+            </Col>
+            <Col xs={12} lg={6}>
+              <PartDashboard />
+            </Col>
+          </Row>
         </div>
       </div>
     </>

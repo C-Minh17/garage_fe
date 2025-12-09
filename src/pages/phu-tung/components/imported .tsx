@@ -7,6 +7,7 @@ import BaseModal from "../../../components/baseModal"
 import FormImport from "./formImport"
 import { getImportItem } from "../../../services/api/importItemApi"
 import ImportDetail from "./detailImport"
+import { formatCurrency } from "../../../utils/formatCurrency"
 
 const ImportItem = () => {
   const [dataImportItem, setDataImportItem] = useState<MImportItem.IRecord[]>([])
@@ -40,6 +41,9 @@ const ImportItem = () => {
       title: "Tổng tiền",
       dataIndex: "total",
       width: 200,
+      render: (value) => (
+        <div>{formatCurrency(value)}</div>
+      )
     },
     {
       title: "Ngày nhập",

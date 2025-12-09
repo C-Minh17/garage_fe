@@ -6,6 +6,7 @@ import { getPayment } from "../../../services/api/paymentApi"
 import BaseModal from "../../../components/baseModal"
 import PaymentDetailInline from "./historyDetail"
 import { formatVNTime } from "../../../utils/formatTime"
+import { formatCurrency } from "../../../utils/formatCurrency"
 
 const HistoryPayment = () => {
   const [dataPayment, setDataPayment] = useState<MPayment.IRecord[]>([])
@@ -43,6 +44,9 @@ const HistoryPayment = () => {
       title: "Tổng tiền",
       dataIndex: "amount",
       width: 200,
+      render: (value) => (
+        <div>{formatCurrency(value)}</div>
+      )
     },
     {
       title: "Ngày thanh toán",

@@ -8,34 +8,35 @@ import DetailService from "./components/detailService"
 import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye, AiOutlineSearch, AiTwotoneCloseCircle, AiOutlineSortAscending, AiOutlineSortDescending } from "react-icons/ai"
 import { Input } from "../../components/FormBase"
 import { notify } from "../../components/Notification"
+import { formatCurrency } from "../../utils/formatCurrency"
 
 const convertBrokenObjectToArray = (res: any): MService.IRecord[] => {
   if (!res) return []
   if (Array.isArray(res.data)) return res.data
   if (res.data && Array.isArray(res.data)) return res.data
   if (res.data && typeof res.data === 'object') {
-     return Object.values(res.data)
+    return Object.values(res.data)
   }
 
   if (typeof res === 'object') {
-     const dataArray = Object.keys(res)
-    .filter(key => !isNaN(Number(key)))
-    .map(key => (res as any)[key]);
-     return dataArray
+    const dataArray = Object.keys(res)
+      .filter(key => !isNaN(Number(key)))
+      .map(key => (res as any)[key]);
+    return dataArray
   }
   return []
 }
 
 const Services = () => {
   const [dataService, setDataService] = useState<MService.IRecord[]>([])
-  
+
   const [isModal, setIsModal] = useState(false)
   const [serviceEdit, setServiceEdit] = useState<MService.IRecord>()
   const [method, setMethod] = useState<"post" | "put">("post")
-  
+
   const [isModalDel, setIsModalDel] = useState(false)
   const [serviceIdDel, setServiceIdDel] = useState<string>()
-  
+
   const [isModalDetail, setIsModalDetail] = useState(false)
   const [dataDetail, setDataDetail] = useState<MService.IRecord>()
 
@@ -49,7 +50,11 @@ const Services = () => {
     { title: "Mã dịch vụ", dataIndex: "serviceCode" },
     { title: "Tên dịch vụ", dataIndex: "name" },
     { title: "Giá (VNĐ)", dataIndex: "price", render: (value) => <div>{Number(value)?.toLocaleString()}</div> },
-    { title: "Mô tả", dataIndex: "description" },
+    { title: "Mô tả", dataIndex: "description", width: 180, render: (text: string) => {
+        const max = 27;
+        return text?.length > max ? text.slice(0, max) + "..." : text;
+      }
+     },
     {
       title: <div style={{ textAlign: "center" }}>Thao tác</div>,
       width: 100,
@@ -81,7 +86,7 @@ const Services = () => {
 
   const handleDelete = async (id?: string) => {
     if (!id) return
-    
+
     const res = await delService(id)
     if (res?.success) {
       notify({ title: "Delete", type: "success", description: "Dịch vụ đã được xóa thành công" })
@@ -165,7 +170,7 @@ const Services = () => {
         </Button>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "end", marginTop: 10, marginBottom: 10 }}>          
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "end", marginTop: 10, marginBottom: 10 }}>
         <Button onClick={() => setIsDesc(!isDesc)} type="dashed" style={{ marginRight: 10, display: 'flex', alignItems: 'center', gap: 5, height: 38 }}>
           {isDesc ? <AiOutlineSortDescending size={20} /> : <AiOutlineSortAscending size={20} />}
           {isDesc ? "Mới nhất" : "Cũ nhất"}
@@ -185,7 +190,7 @@ const Services = () => {
 
 
       <TableBase columns={Columns} dataSource={dataService} loading={loading} />
-      
+
     </>
   )
 }

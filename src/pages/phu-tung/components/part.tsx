@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import TableBase, { Column } from "../../../components/BaseTable"
-import { deletePart, getPart } from "../../../services/api/partApi"
+import { deletePart, getPart, getPartSearch } from "../../../services/api/partApi"
 import { Input } from "../../../components/FormBase"
 import { AiOutlineDelete, AiOutlineEdit, AiOutlineEye, AiOutlineSearch } from "react-icons/ai"
 import Button from "../../../components/Button"
@@ -22,6 +22,7 @@ const Parts = () => {
   const [idPartdel, setIdPartdel] = useState<string>('')
   const [isModalDel, setIsModalDel] = useState<boolean>(false)
   const [isModalDetail, setIsModalDetail] = useState<boolean>(false)
+  const [querySearch, setQuerySearch] = useState<any>()
 
   const columns: Column<MPart.IRecord>[] = [
     {
@@ -70,7 +71,7 @@ const Parts = () => {
       dataIndex: "description",
       width: 250,
       render: (text: string) => {
-        const max = 60;
+        const max = 27;
         return text?.length > max ? text.slice(0, max) + "..." : text;
       }
     },
@@ -113,10 +114,19 @@ const Parts = () => {
   }
 
   useEffect(() => {
-    setLoading(true)
-    getPart().then(res => setDataPart(res?.data ? res.data : []))
-    setLoading(false)
-  }, [isReload])
+    if (querySearch) {
+      setLoading(true)
+      getPartSearch(querySearch)
+        .then(res => setDataPart(res?.data ? res.data : []))
+        .finally(() => setLoading(false))
+    } else {
+      setLoading(true)
+      getPart()
+        .then(res => setDataPart(res?.data ? res.data : []))
+        .finally(() => setLoading(false))
+    }
+  }, [isReload, querySearch])
+
   return (
     <>
       <BaseModal
@@ -171,6 +181,7 @@ const Parts = () => {
                   borderRadius: 7
                 }}
                 placeholder="Tìm theo mã, tên sản phẩm ..."
+                onChange={e => setQuerySearch(e.target.value)}
               />
             </div>
             <TableBase

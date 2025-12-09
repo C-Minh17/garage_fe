@@ -8,13 +8,10 @@ import { ColorStyle } from "../../../styles/colors";
 
 
 const RevenueStatistics = ({ dataaa }: { dataaa: any }) => {
-  const [segmented, setSegmented] = useState<1 | 2>(1)
-
-  const dataSource = segmented === 1 ? dataaa?.serviceStatistics : dataaa?.partStatistics
 
   const columns: Column<any>[] = [
     {
-      title: "Hạng",
+      title: "Top",
       dataIndex: "rank",
       width: 100,
       render: (val) => (
@@ -29,12 +26,7 @@ const RevenueStatistics = ({ dataaa }: { dataaa: any }) => {
       ),
     },
     {
-      title: "Mã",
-      dataIndex: "code",
-      width: 150,
-    },
-    {
-      title: "Tên dịch vụ",
+      title: "Tên phụ tùng",
       dataIndex: "name",
     },
     {
@@ -59,14 +51,6 @@ const RevenueStatistics = ({ dataaa }: { dataaa: any }) => {
       ),
     },
   ];
-
-  const styleOp = {
-    padding: "3px 14px",
-    fontSize: 15,
-    fontWeight: 500,
-    borderRadius: 6,
-    cursor: "pointer"
-  }
 
   return (
     <div
@@ -94,31 +78,12 @@ const RevenueStatistics = ({ dataaa }: { dataaa: any }) => {
             Xếp hạng dịch vụ và phụ tùng theo tổng doanh thu
           </p>
         </div>
-
-        <div>
-          <div style={{
-            display: "inline-flex",
-            padding: 4,
-            borderRadius: 8,
-            backgroundColor: ColorStyle.BgSpotlight,
-            marginLeft: 10
-          }}>
-            <div onClick={() => setSegmented(1)} style={{
-              ...styleOp,
-              backgroundColor: segmented === 1 ? "#fff" : "transparent",
-            }}>Dịch vụ</div>
-            <div onClick={() => setSegmented(2)} style={{
-              ...styleOp,
-              backgroundColor: segmented === 2 ? "#fff" : "transparent",
-            }}>Phụ tùng</div>
-          </div>
-        </div>
       </div>
 
       {/* Table Section */}
       <TableBase
         columns={columns}
-        dataSource={dataSource}
+        dataSource={dataaa?.partStatistics || []}
         pageSize={8}
       />
     </div>
