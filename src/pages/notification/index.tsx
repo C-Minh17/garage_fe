@@ -4,10 +4,11 @@ import Drawer from "../../components/draw.tsx"
 import Button from "../../components/Button"
 import { deleteNotificationsAll, getNotifications, getNotificationsCancelled, getNotificationsConfirmed, getNotificationsPending } from "../../services/api/notificationApi"
 import NotificationList from "./components/listNotify"
-import { AiOutlineSchedule } from "react-icons/ai"
+import { AiOutlineClose, AiOutlineSchedule } from "react-icons/ai"
 import BaseModal from "../../components/baseModal"
 import ConfirmDelete from "../../components/confirmDelete"
 import { notify } from "../../components/Notification"
+import { useBreakpoint } from "../../hooks/useBreakpoint"
 
 const Notification = () => {
   const [tab, setTab] = useState<1 | 2 | 3>(1)
@@ -18,6 +19,8 @@ const Notification = () => {
   const [dataNotifyCancel, setDataNotifyCancel] = useState<MNotification.IRecord[]>([])
   const [isReload, setIsReaload] = useState<boolean>(false);
   const [isModal, setIsModal] = useState<boolean>(false);
+  const screen = useBreakpoint()
+  const isMobile = screen.sm
 
   useEffect(() => {
     const fetchAll = () => {
@@ -59,15 +62,30 @@ const Notification = () => {
       <Drawer
         visible={open2}
         onClose={() => setOpen2(false)}
-        width={400}
+        width={!isMobile ? 300 : 400}
       >
         <div style={{
           padding: "10px 20px"
         }}>
-          <h1 style={{
-            fontSize: 30,
-            marginTop: 10
-          }}>Thông tin đặt lịch</h1>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}>
+            <h1 style={{
+              fontSize: 30,
+              marginTop: 10
+            }}>Thông tin đặt lịch</h1>
+            <span
+              style={{
+                cursor: "pointer",
+                fontSize: "20px",
+              }}
+              onClick={() => setOpen2(false)}
+            >
+              <AiOutlineClose />
+            </span>
+
+          </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <p>-----------------</p>
             <p onClick={() => setIsModal(true)} style={{ fontSize: 13, color: "red", cursor: "pointer" }}>xóa tất cả</p>

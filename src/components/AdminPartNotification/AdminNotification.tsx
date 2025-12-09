@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Badge, Button, ListGroup, OverlayTrigger, Popover, Spinner, Modal, Tabs, Tab, Tooltip } from 'react-bootstrap';
 import { AiOutlineBell, AiOutlineCheck, AiOutlineSync, AiOutlineClose, AiOutlineEye, AiOutlineInbox, AiOutlineDelete, AiOutlineWarning } from 'react-icons/ai';
-import { getPartBooking, confirmPartBooking, deleteAllPartBookings, cancelPartBooking} from '../../services/api/adminpartbookingApi'; 
+import { getPartBooking, confirmPartBooking, deleteAllPartBookings, cancelPartBooking } from '../../services/api/adminpartbookingApi';
 
 import { notify } from '../../components/Notification';
 import AdminPartBookingDetail from './components/detail';
@@ -51,7 +51,7 @@ const AdminNotification = () => {
 
     useEffect(() => {
         fetchNotifications();
-        const interval = setInterval(fetchNotifications, 30000);
+        const interval = setInterval(fetchNotifications, 10000);
         return () => clearInterval(interval);
     }, []);
 
@@ -197,7 +197,7 @@ const AdminNotification = () => {
 
     const popoverContent = (
         <Popover id="popover-notification" className="shadow-lg border-0" style={{ width: '420px', maxWidth: '95vw' }}>
-           <div className="d-flex justify-content-between align-items-center bg-white px-3 pt-3 pb-2">
+            <div className="d-flex justify-content-between align-items-center bg-white px-3 pt-3 pb-2">
                 <h6 className="fw-bold text-primary mb-0">Quản lý đơn hàng</h6>
                 <Button variant="light" size="sm" className="rounded-circle p-1 text-muted" onClick={fetchNotifications}>
                     <AiOutlineSync className={loading ? "fa-spin" : ""} size={16} />
@@ -246,7 +246,7 @@ const AdminNotification = () => {
                 </div>
             </OverlayTrigger>
 
-            <AdminPartBookingDetail 
+            <AdminPartBookingDetail
                 show={showModal}
                 onHide={() => setShowModal(false)}
                 data={selectedOrder}

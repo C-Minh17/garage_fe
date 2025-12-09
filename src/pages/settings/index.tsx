@@ -14,12 +14,12 @@ const Profile = () => {
   const [isModal, setIsModal] = useState<boolean>(false)
   const { getProfile, postProfileAvatar, isReload } = useModelProfile()
   const reload = useReloadStore((state) => state.reload);
+  const reloadKey = useReloadStore((state) => state.reloadKey);
 
   useEffect(() => {
     getProfile().then(res => setDataProfile(res as any))
-  }, [isReload])
+  }, [reloadKey])
 
-  console.log(dataProfile)
   return (
     <>
       <BaseModal

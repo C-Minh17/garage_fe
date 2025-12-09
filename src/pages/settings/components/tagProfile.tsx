@@ -13,8 +13,6 @@ const TagProfile = ({ logout }: { logout?: () => void }) => {
   const { getProfile, isReload } = useModelProfile()
   const reloadKey = useReloadStore((state) => state.reloadKey);
 
-
-
   const navigate = useNavigate()
 
   useEffect(() => {

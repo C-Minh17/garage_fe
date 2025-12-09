@@ -12,7 +12,7 @@ interface IProps {
 }
 
 const AdminPartBookingDetail: React.FC<IProps> = ({ show, onHide, data, onConfirm, onReject }) => {
-    
+
     const formatMoney = (n: any) => Number(n).toLocaleString('vi-VN') + 'đ';
 
     return (
@@ -68,7 +68,7 @@ const AdminPartBookingDetail: React.FC<IProps> = ({ show, onHide, data, onConfir
                                     </div>
                                     <hr className="my-2 dashed" />
                                     <div className="d-flex align-items-center justify-content-between small text-muted">
-                                        <span><AiOutlineClockCircle className="me-1"/> Đặt lúc:</span>
+                                        <span><AiOutlineClockCircle className="me-1" /> Đặt lúc:</span>
                                         <span>{new Date(data.createdAt).toLocaleString('vi-VN')}</span>
                                     </div>
                                 </Card.Body>
@@ -85,17 +85,17 @@ const AdminPartBookingDetail: React.FC<IProps> = ({ show, onHide, data, onConfir
 
                 {data && !data.isActive && data.status !== 'CANCELLED' && (
                     <>
-                        <Button 
-                            variant="outline-danger" 
-                            className="rounded-pill px-4" 
+                        <Button
+                            variant="outline-danger"
+                            className="rounded-pill px-4"
                             onClick={() => onReject(data.id)}
                         >
                             Từ chối
                         </Button>
 
-                        <Button 
-                            variant="primary" 
-                            className="rounded-pill px-4 fw-bold shadow-sm" 
+                        <Button
+                            variant="primary"
+                            className="rounded-pill px-4 fw-bold shadow-sm"
                             onClick={() => onConfirm(data.id)}
                         >
                             Xác nhận
