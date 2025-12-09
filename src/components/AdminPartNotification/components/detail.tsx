@@ -11,10 +11,8 @@ interface IProps {
     onReject: (id: string) => void;
 }
 
-const AdminPartBookingDetail: React.FC<IProps> = ({ show, onHide, data, onConfirm, onReject }) => {
-    
+const AdminPartBookingDetail = ({ show, onHide, data, onConfirm, onReject }: IProps) => {    
     const formatMoney = (n: any) => Number(n).toLocaleString('vi-VN') + 'đ';
-
     return (
         <Modal show={show} onHide={onHide} centered>
             <Modal.Header closeButton className="border-bottom-0 bg-light">
