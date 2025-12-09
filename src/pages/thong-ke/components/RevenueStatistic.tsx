@@ -6,64 +6,13 @@ import Tag from "../../../components/Tag";
 import { formatCurrency } from "../../../utils/formatCurrency";
 import { ColorStyle } from "../../../styles/colors";
 
-// Định nghĩa kiểu dữ liệu cho row
-interface IRevenueData {
-  id: string;
-  rank: number;
-  code: string;
-  name: string;
-  quantity: number;
-  totalRevenue: number;
-}
 
-
-const RevenueStatistics = () => {
+const RevenueStatistics = ({ dataaa }: { dataaa: any }) => {
   const [segmented, setSegmented] = useState<1 | 2>(1)
 
-  const dataaa = {
-    serviceStatistics: [
-      {
-        id: 1,
-        rank: 1,
-        code: 'S004',
-        name: 'Thay lốp xe',
-        quantity: 312,
-        totalRevenue: 468000000
-      },
-      {
-        id: 2,
-        rank: 2,
-        code: 'S003',
-        name: 'Sửa hệ thống phan',
-        quantity: 156,
-        totalRevenue: 312000000
-      }
-    ],
-    partStatistics: [
-      {
-        id: 1,
-        rank: 1,
-        code: 'S004',
-        name: 'mmmmm',
-        quantity: 312,
-        totalRevenue: 468000000
-      },
-      {
-        id: 2,
-        rank: 2,
-        code: 'S003',
-        name: 'abc',
-        quantity: 156,
-        totalRevenue: 312000000
-      }
-    ]
-  }
+  const dataSource = segmented === 1 ? dataaa?.serviceStatistics : dataaa?.partStatistics
 
-  // Mock Data (Giả lập dữ liệu giống trong ảnh)
-  const dataSource = segmented === 1 ? dataaa.serviceStatistics : dataaa.partStatistics
-
-  // Định nghĩa cột cho TableBase
-  const columns: Column<IRevenueData>[] = [
+  const columns: Column<any>[] = [
     {
       title: "Hạng",
       dataIndex: "rank",
@@ -169,7 +118,7 @@ const RevenueStatistics = () => {
       {/* Table Section */}
       <TableBase
         columns={columns}
-        dataSource={dataSource as any}
+        dataSource={dataSource}
         pageSize={8}
       />
     </div>

@@ -16,6 +16,7 @@ const ipRepairOrder = ipRoot + "/repair-orders"
 const ipPayment = ipRoot + "/payments"
 const ipPartBooking = ipRoot + "/part-bookings"
 const ipNotification = ipRoot + "/notifications"
+const ipStatistic = ipRoot + "/reports"
 
 
 
@@ -36,5 +37,6 @@ export {
   ipRepairOrder,
   ipPayment,
   ipPartBooking,
-  ipNotification
+  ipNotification,
+  ipStatistic
 }

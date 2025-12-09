@@ -6,12 +6,14 @@ import FormProfile from "./components/formProfile";
 import avatarDefaulf from "../../assets/avatar-hai-1-1.jpg"
 import useModelProfile from "../../services/api/profileApi";
 import { ipProfile, ipRoot, ipRootServer } from "../../utils/ip";
+import { useReloadStore } from "../../stores/useReload";
 
 
 const Profile = () => {
   const [dataProfile, setDataProfile] = useState<MProfile.IRecord>()
   const [isModal, setIsModal] = useState<boolean>(false)
   const { getProfile, postProfileAvatar, isReload } = useModelProfile()
+  const reload = useReloadStore((state) => state.reload);
 
   useEffect(() => {
     getProfile().then(res => setDataProfile(res as any))
@@ -55,6 +57,7 @@ const Profile = () => {
                     const target = e.target as HTMLInputElement;
                     const file = target.files?.[0];
                     await postProfileAvatar(file)
+                    reload()
                   }}
                 />
               </div>
