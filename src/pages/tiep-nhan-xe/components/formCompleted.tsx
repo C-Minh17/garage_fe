@@ -10,6 +10,7 @@ import BaseModal from "../../../components/baseModal";
 import SelectPart from "../../phu-tung/components/selectPart";
 import { putRepairOrder } from "../../../services/api/repairOrderApi";
 import { notify } from "../../../components/Notification";
+import { formatCurrency } from "../../../utils/formatCurrency";
 
 interface IFormCompleteOrder {
   orderData?: MRepairOrder.IRecord,
@@ -51,15 +52,20 @@ const FormCompleteOrder = (props: IFormCompleteOrder) => {
 
   const onAddPart = (e: any) => {
     const dataNameId = e.nameId.split("&&")
-    const dataPart = {
-      id: dataNameId[0],
-      name: dataNameId[1],
-      unitPrice: dataNameId[2],
-      quantity: e.quantity,
-      total: e.quantity * dataNameId[2]
+    if (Number(dataNameId[3]) > e.quantity && e.quantity > 0) {
+      const dataPart = {
+        id: dataNameId[0],
+        name: dataNameId[1],
+        unitPrice: dataNameId[2],
+        quantity: e.quantity,
+        total: e.quantity * dataNameId[2]
+      }
+      setParts([...parts, dataPart])
+      setIsModalPart(false)
+    } else {
+      notify({ title: "Error", type: "error", description: "vui lòng nhập đúng số lượng" })
     }
-    setParts([...parts, dataPart])
-    setIsModalPart(false)
+
   }
 
   const columnsPart: Column<IPartItem>[] = [
@@ -75,14 +81,14 @@ const FormCompleteOrder = (props: IFormCompleteOrder) => {
       title: "Đơn giá",
       dataIndex: "unitPrice",
       render: (value) => (
-        <div>{value.toLocaleString("vi-VN")}</div>
+        <div>{formatCurrency(value)}</div>
       )
     },
     {
       title: "Thành tiền",
       dataIndex: "total",
       render: (value) => (
-        <div>{value.toLocaleString("vi-VN")}</div>
+        <div>{formatCurrency(value)}</div>
       )
     },
     {

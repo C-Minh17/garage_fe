@@ -110,7 +110,7 @@ const FormImport = (props: IFormImport) => {
               </Col>
               <Col xs={12} sm={2}>
                 <label className="form-label required" style={{ margin: 5 }}>Số lượng</label>
-                <Form.Input type="number" name="quantity" />
+                <Form.Input type="number" name="quantity" min={1} />
               </Col>
             </Row>
             <div style={{ margin: "10px 5px", textAlign: "end" }}>

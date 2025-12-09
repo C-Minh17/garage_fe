@@ -37,6 +37,16 @@ const putNotificationsConfirmed = async (id: string) => {
   return res as ApiResponse<MNotification.IRecord>
 }
 
+const deleteNotificationsId = async (id: string) => {
+  const res = await axios.delete(`${ipNotification}/${id}`)
+  return res as ApiResponse<null>
+}
+
+const deleteNotificationsAll = async () => {
+  const res = await axios.delete(`${ipNotification}/clear`)
+  return res as ApiResponse<null>
+}
+
 export {
   getNotifications,
   getNotificationsCancelled,
@@ -44,5 +54,7 @@ export {
   getNotificationsPending,
   putNotificationsRead,
   putNotificationsCancelled,
-  putNotificationsConfirmed
+  putNotificationsConfirmed,
+  deleteNotificationsAll,
+  deleteNotificationsId,
 }

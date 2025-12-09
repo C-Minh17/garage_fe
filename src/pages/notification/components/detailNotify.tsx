@@ -5,7 +5,7 @@ import { formatCurrency } from '../../../utils/formatCurrency';
 import Tag from '../../../components/Tag';
 import Button from '../../../components/Button';
 import { notify } from '../../../components/Notification';
-import { putNotificationsCancelled, putNotificationsConfirmed } from '../../../services/api/notificationApi';
+import { deleteNotificationsId, putNotificationsCancelled, putNotificationsConfirmed } from '../../../services/api/notificationApi';
 
 interface INotificationListDetail {
   data: MNotification.IRecord | undefined,
@@ -34,6 +34,19 @@ const DetailNotify = ({ data, isReload, setIsModal, setIsReload }: INotification
     const res = await putNotificationsCancelled(data.id)
     if (res.success) {
       notify({ title: "Success", type: "success", description: "Đã hủy thành công" })
+      setIsReload?.(!isReload)
+      setIsModal?.(false)
+    } else {
+      notify({ title: "Error", type: "error", description: res.message })
+      setIsModal?.(false)
+      setIsReload?.(!isReload)
+    }
+  }
+
+  const deleteNotify = async () => {
+    const res = await deleteNotificationsId(data.id || "")
+    if (res.success) {
+      notify({ title: "Success", type: "success", description: "Đã xóa thành công" })
       setIsReload?.(!isReload)
       setIsModal?.(false)
     } else {
@@ -155,11 +168,19 @@ const DetailNotify = ({ data, isReload, setIsModal, setIsReload }: INotification
         </div>
       </div>
       <div style={{
+        display: data.status === "NEW" ? "block" : "none",
         textAlign: "end",
         margin: "15px 0"
       }}>
         <Button type='error' onClick={cancel}>Hủy lịch</Button>
         <Button onClick={confirm} style={{ margin: "0 20px" }} type='gradientPrimary'>Xác nhận lịch</Button>
+      </div>
+      <div style={{
+        display: data.status === "NEW" ? "none" : "block",
+        textAlign: "end",
+        margin: "15px 15px"
+      }}>
+        <Button type='error' onClick={deleteNotify}>Xóa</Button>
       </div>
     </>
   );

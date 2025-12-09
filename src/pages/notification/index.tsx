@@ -2,9 +2,12 @@ import { useEffect, useState } from "react"
 import { ColorStyle } from "../../styles/colors"
 import Drawer from "../../components/draw.tsx"
 import Button from "../../components/Button"
-import { getNotifications, getNotificationsCancelled, getNotificationsConfirmed, getNotificationsPending } from "../../services/api/notificationApi"
+import { deleteNotificationsAll, getNotifications, getNotificationsCancelled, getNotificationsConfirmed, getNotificationsPending } from "../../services/api/notificationApi"
 import NotificationList from "./components/listNotify"
 import { AiOutlineSchedule } from "react-icons/ai"
+import BaseModal from "../../components/baseModal"
+import ConfirmDelete from "../../components/confirmDelete"
+import { notify } from "../../components/Notification"
 
 const Notification = () => {
   const [tab, setTab] = useState<1 | 2 | 3>(1)
@@ -14,16 +17,45 @@ const Notification = () => {
   const [dataNotifyConfirm, setDataNotifyConfirm] = useState<MNotification.IRecord[]>([])
   const [dataNotifyCancel, setDataNotifyCancel] = useState<MNotification.IRecord[]>([])
   const [isReload, setIsReaload] = useState<boolean>(false);
+  const [isModal, setIsModal] = useState<boolean>(false);
 
   useEffect(() => {
-    getNotifications().then(res => setDataNotify(res.data ? res.data : []))
-    getNotificationsPending().then(res => setDataNotifyPending(res.data ? res.data : []))
-    getNotificationsCancelled().then(res => setDataNotifyCancel(res.data ? res.data : []))
-    getNotificationsConfirmed().then(res => setDataNotifyConfirm(res.data ? res.data : []))
+    const fetchAll = () => {
+      getNotifications().then(res => setDataNotify(res.data || []))
+      getNotificationsPending().then(res => setDataNotifyPending(res.data || []))
+      getNotificationsCancelled().then(res => setDataNotifyCancel(res.data || []))
+      getNotificationsConfirmed().then(res => setDataNotifyConfirm(res.data || []))
+    }
+    fetchAll()
+    const interval = setInterval(fetchAll, 20000)
+    return () => clearInterval(interval)
+
   }, [isReload])
+
+  const deleteAll = async () => {
+    const res = await deleteNotificationsAll()
+    if (res.success) {
+      notify({ title: "Success", type: "success", description: "Đã xóa thành công" })
+      setIsReaload?.(!isReload)
+      setIsModal?.(false)
+    } else {
+      notify({ title: "Error", type: "error", description: res.message })
+      setIsModal?.(false)
+      setIsReaload?.(!isReload)
+    }
+  }
 
   return (
     <>
+      <BaseModal
+        isOpen={isModal}
+        closeModal={() => setIsModal(false)}
+      >
+        <ConfirmDelete
+          onCancel={() => setIsModal(false)}
+          onConfirm={deleteAll}
+        />
+      </BaseModal>
       <Drawer
         visible={open2}
         onClose={() => setOpen2(false)}
@@ -36,7 +68,10 @@ const Notification = () => {
             fontSize: 30,
             marginTop: 10
           }}>Thông tin đặt lịch</h1>
-          <p>-----------------</p>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <p>-----------------</p>
+            <p onClick={() => setIsModal(true)} style={{ fontSize: 13, color: "red", cursor: "pointer" }}>xóa tất cả</p>
+          </div>
           <div
             style={{
               display: "flex",
