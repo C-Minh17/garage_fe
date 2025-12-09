@@ -10,6 +10,7 @@ const RevenueChart = ({ dataaa }: { dataaa: any }) => {
   const data = dataaa?.chartData ?? []
 
   const config: ColumnConfig = {
+    autoFit: true,
     data,
     xField: 'month',
     yField: 'value',
@@ -32,7 +33,7 @@ const RevenueChart = ({ dataaa }: { dataaa: any }) => {
         labelFormatter: (v: string) => v,
       },
       y: {
-        labelFormatter: (v: number) => `${v / 1000000}M`,
+        labelFormatter: (v: number) => (v / 1_000_000).toFixed(2) + 'M',
         grid: true,
         gridLineDash: [4, 4],
         gridStroke: '#e0e0e0',
@@ -90,7 +91,7 @@ const RevenueChart = ({ dataaa }: { dataaa: any }) => {
         </p>
       </div>
 
-      <div style={{ height: 350 }}>
+      <div style={{ width: "100%", height: 350 }}>
         <Column {...config} />
       </div>
     </div>

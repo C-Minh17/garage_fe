@@ -5,6 +5,7 @@ import { notify } from "../../../components/Notification"
 import { useState } from "react"
 import useModelProfile from "../../../services/api/profileApi"
 import Select from "../../../components/Select"
+import { useReloadStore } from "../../../stores/useReload"
 
 
 interface IFormProfile {
@@ -16,14 +17,15 @@ interface IFormProfile {
 
 const FormProfile = ({ valueInitial, setIsModal, isReload, setIsReload }: IFormProfile) => {
   const { putProfile } = useModelProfile()
+  const reload = useReloadStore((state) => state.reload);
 
   const onSubmit = async (data: MProfile.IRecord) => {
     if (!valueInitial?.id) return
     const res = await putProfile(data)
     if (res) {
       notify({ title: "Success", type: "success", description: "Thông tin cá nhân đã được cập nhật" })
-      setIsReload?.(!isReload)
       setIsModal?.(false)
+      reload()
     } else {
       notify({ title: "Error", type: "error" })
     }
@@ -79,18 +81,6 @@ const FormProfile = ({ valueInitial, setIsModal, isReload, setIsReload }: IFormP
               <label className="form-label" style={{ margin: 5 }}>Địa chỉ cụ thể</label>
               <Form.Input name="address" placeholder="Số nhà, đường..." />
             </Col>
-            {/* <Col xs={12} sm={12}>
-              <label className="form-label" style={{ margin: 5 }}>Ảnh đại diện (URL)</label>
-              <Input
-                type="file"
-                onChange={(e) => {
-                  const target = e.target as HTMLInputElement;
-                  const file = target.files?.[0];
-                  setLinkAvatar(file);
-                }}
-                name="avatar"
-              />
-            </Col> */}
             <Col xs={12} sm={12}>
               <label className="form-label" style={{ margin: 5 }}>Mô tả</label>
               <Form.Input name="description" placeholder="Mô tả ngắn về bản thân" />

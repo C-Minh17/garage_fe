@@ -3,7 +3,7 @@ import "./assets/setting.scss";
 import Button from "../../components/Button";
 import BaseModal from "../../components/baseModal";
 import FormProfile from "./components/formProfile";
-import avatarDefaulf from "../../assets/avatar-hai-1-1.jpg"
+import avatarDefaulf from "../../assets/avatar.jpg"
 import useModelProfile from "../../services/api/profileApi";
 import { ipProfile, ipRoot, ipRootServer } from "../../utils/ip";
 import { useReloadStore } from "../../stores/useReload";
@@ -14,12 +14,12 @@ const Profile = () => {
   const [isModal, setIsModal] = useState<boolean>(false)
   const { getProfile, postProfileAvatar, isReload } = useModelProfile()
   const reload = useReloadStore((state) => state.reload);
+  const reloadKey = useReloadStore((state) => state.reloadKey);
 
   useEffect(() => {
     getProfile().then(res => setDataProfile(res as any))
-  }, [isReload])
+  }, [reloadKey])
 
-  console.log(dataProfile)
   return (
     <>
       <BaseModal

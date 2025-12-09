@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import avatarDefaulf from "../../../assets/avatar-hai-1-1.jpg"
+import avatarDefaulf from "../../../assets/avatar.jpg"
 import { useNavigate } from "react-router"
 import { ColorStyle } from "../../../styles/colors"
 import { AiOutlineLogout, AiOutlineUser } from "react-icons/ai"
@@ -12,8 +12,6 @@ const TagProfile = ({ logout }: { logout?: () => void }) => {
   const [isOpen, setIsOpen] = useState(false)
   const { getProfile, isReload } = useModelProfile()
   const reloadKey = useReloadStore((state) => state.reloadKey);
-
-
 
   const navigate = useNavigate()
 
