@@ -146,7 +146,7 @@ const FormImport = (props: IFormImport) => {
             </Col>
             <Col xs={12} sm={12}>
               <label className="form-label required" style={{ margin: 5 }}>Ngày nhập hàng</label>
-              <Form.Input name="date" type="date" />
+              <Form.Input name="date" type="date" required />
             </Col>
             {/* <Col xs={12} sm={12}>
               <label className="form-label" style={{ margin: 5 }}>Ghi chú</label>

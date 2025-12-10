@@ -131,7 +131,6 @@ axios.interceptors.response.use(
         } catch (err: any) {
           console.error("Refresh token thất bại:", err);
 
-          // Chỉ đăng xuất nếu thực sự là lỗi 401 hoặc token không hợp lệ
           const errorStatus = err?.response?.status;
           const isTokenInvalid = errorStatus === 401 || errorStatus === 403;
 
@@ -157,61 +156,61 @@ axios.interceptors.response.use(
 
     switch (status) {
       case 400:
-        notify({
-          title: "Lỗi 400",
-          type: "error",
-          description: "Dữ liệu không hợp lệ."
-        });
+        // notify({
+        //   title: "Lỗi 400",
+        //   type: "error",
+        //   description: "Dữ liệu không hợp lệ."
+        // });
         break;
 
       case 403:
-        notify({
-          title: "Lỗi 403",
-          type: "error",
-          description: "Bạn không có quyền truy cập."
-        });
+        // notify({
+        //   title: "Lỗi 403",
+        //   type: "error",
+        //   description: "Bạn không có quyền truy cập."
+        // });
         break;
 
       case 404:
-        notify({
-          title: "Lỗi 404",
-          type: "error",
-          description: "Không tìm thấy tài nguyên yêu cầu."
-        });
+        // notify({
+        //   title: "Lỗi 404",
+        //   type: "error",
+        //   description: "Không tìm thấy tài nguyên yêu cầu."
+        // });
         break;
 
       case 405:
-        notify({
-          title: "Lỗi 405",
-          type: "error",
-          description: "Phương thức không hợp lệ."
-        });
+        // notify({
+        //   title: "Lỗi 405",
+        //   type: "error",
+        //   description: "Phương thức không hợp lệ."
+        // });
         break;
 
       case 409:
-        notify({
-          title: "Lỗi 409",
-          type: "warning",
-          description: "Xung đột dữ liệu."
-        });
+        // notify({
+        //   title: "Lỗi 409",
+        //   type: "warning",
+        //   description: "Xung đột dữ liệu."
+        // });
         break;
 
       case 500:
       case 502:
       case 503:
-        notify({
-          title: "Lỗi server",
-          type: "error",
-          description: "Máy chủ gặp sự cố, vui lòng thử lại sau."
-        });
+        // notify({
+        //   title: "Lỗi server",
+        //   type: "error",
+        //   description: "Máy chủ gặp sự cố, vui lòng thử lại sau."
+        // });
         break;
 
       default:
-        notify({
-          title: "Lỗi không xác định",
-          type: "error",
-          description: "Vui lòng thử lại sau."
-        });
+      // notify({
+      //   title: "Lỗi không xác định",
+      //   type: "error",
+      //   description: "Vui lòng thử lại sau."
+      // });
     }
 
     return Promise.resolve({

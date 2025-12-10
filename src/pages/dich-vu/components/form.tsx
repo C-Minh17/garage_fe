@@ -13,15 +13,15 @@ interface IFormService {
 }
 
 const FormService = ({ valueInitial, method, setIsModal, isReload, setIsReload }: IFormService) => {
-  
+
   const onSubmit = async (data: MService.IRecord) => {
-    
+
 
     const payload = {
-       name: data.name,
-       price: Number(data.price),
-       description: data.description || "",
-     }
+      name: data.name,
+      price: Number(data.price),
+      description: data.description || "",
+    }
 
     let res
     if (method === "post") {
@@ -56,7 +56,7 @@ const FormService = ({ valueInitial, method, setIsModal, isReload, setIsReload }
 
           <Col sm={12}>
             <label className="form-label required" style={{ margin: 5 }}>Giá (VNĐ)</label>
-            <Form.Input name="price" placeholder="Giá dịch vụ" type="number" required />
+            <Form.Input name="price" placeholder="Giá dịch vụ" type="number" required min={0} />
           </Col>
           <Col sm={12}>
             <label className="form-label" style={{ margin: 5 }}>Mô tả</label>

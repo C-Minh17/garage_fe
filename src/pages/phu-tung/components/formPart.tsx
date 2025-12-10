@@ -53,11 +53,11 @@ const FormPart = ({ valueInitial, method, setIsModal, isReload, setIsReload }: I
             </Col>
             <Col xs={12} sm={6}>
               <label className="form-label required" style={{ margin: 5 }}>Giá bán</label>
-              <Form.Input type="number" name="price" placeholder="Giá bán" required />
+              <Form.Input min={0} type="number" name="price" placeholder="Giá bán" required />
             </Col>
             <Col xs={12} sm={6}>
               <label className="form-label required" style={{ margin: 5 }}>Tồn kho</label>
-              <Form.Input type="number" name="stock" placeholder="0" required disabled={method === 'post' ? true : false} />
+              <Form.Input min={0} type="number" name="stock" placeholder="0" required disabled={method === 'post' ? true : false} />
             </Col>
             <Col xs={12} sm={12}>
               <label className="form-label " style={{ margin: 5 }}>Nhà cung cấp</label>
